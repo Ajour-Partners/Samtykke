@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Samtykke – Ajour & Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',sans-serif;background:#f4f6f8;color:#1a1a2e;min-height:100vh}
+.header{background:#fff;border-bottom:2px solid #538CB2;padding:12px 0;text-align:center}
+.logo-txt{font-size:1.1rem;font-weight:800;color:#002D4B;letter-spacing:.05em}
+.logo-sub{font-size:.65rem;color:#538CB2;letter-spacing:.15em;text-transform:uppercase}
+.hero{background:linear-gradient(135deg,#002D4B 0%,#538CB2 100%);padding:18px 20px;text-align:center;color:#fff}
+.hero h1{font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.kunde{font-weight:700;font-size:.9rem;margin-top:6px;color:#d0e8f8}
+.badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:3px 12px;border-radius:20px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+.card{background:#fff;margin:12px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
+.card-hd{background:#002D4B;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.card-hd h2{color:#fff;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.card-body{padding:14px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.info-felt{background:#f0f4f8;padding:7px 9px;border-radius:6px}
+.info-lbl{font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:#538CB2;font-weight:700;margin-bottom:2px}
+.info-val{font-size:.8rem;font-weight:600;color:#002D4B}
+.punkt{margin-bottom:10px}
+.punkt-titel{font-size:.78rem;font-weight:700;color:#002D4B;margin-bottom:3px}
+.punkt-tekst{font-size:.74rem;line-height:1.7;color:#333}
+.fold-btn{width:100%;padding:10px;background:#f0f4f8;border:1px solid #C8D8E8;border-radius:8px;color:#002D4B;font-size:.78rem;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;text-align:center;margin:4px 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.fold-indhold{display:none}
+.fold-indhold.aaben{display:block}
+.bekr-boks{margin-top:10px;padding:10px 12px;background:#eef3f7;border-left:3px solid #538CB2;border-radius:0 6px 6px 0;font-size:.72rem;color:#002D4B;font-weight:500;line-height:1.6}
+.sign-lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#002D4B;margin-bottom:5px}
+.sign-canvas{border:2px solid #538CB2;border-radius:8px;background:#fff;width:100%;height:130px;touch-action:none;cursor:crosshair;display:block}
+.sign-canvas.signed{border-color:#002D4B}
+.btn-clear{padding:5px 10px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#666;font-size:.7rem;font-family:'Montserrat',sans-serif;cursor:pointer;font-weight:600;margin-top:5px}
+.navn-felt{width:100%;padding:9px 11px;border:2px solid #ddd;border-radius:8px;font-size:.88rem;font-family:'Montserrat',sans-serif;font-weight:600;color:#002D4B;margin:10px 0 12px}
+.navn-felt:focus{outline:none;border-color:#538CB2}
+.btn-accept{width:100%;padding:13px;background:linear-gradient(135deg,#002D4B,#538CB2);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;box-shadow:0 4px 14px rgba(0,45,75,.3)}
+.btn-accept:disabled{opacity:.4;cursor:not-allowed}
+#successSide{display:none;min-height:100vh;background:linear-gradient(135deg,#002D4B,#538CB2);flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
+#successSide.show{display:flex}
+.success-dato{background:rgba(255,255,255,.15);border-radius:10px;padding:10px 18px;margin-top:14px;color:#fff;font-weight:700;font-size:.82rem}
+.footer{text-align:center;padding:14px;font-size:.63rem;color:#888;line-height:1.8}
+.footer a{color:#538CB2}
+@media(max-width:400px){.info-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo-txt">AJOUR & PARTNERS</div>
+  <div class="logo-sub">Din Forsikringspartner</div>
+</div>
+
+<div id="mainContent">
+  <div class="hero">
+    <div id="heroIco" style="font-size:1.8rem;margin-bottom:6px">📋</div>
+    <h1 id="heroTitel">Samtykke</h1>
+    <p style="font-size:.75rem;opacity:.85">Ajour & Partners ApS (CVR: 46249054)</p>
+    <div class="kunde" id="kundeNavn"></div>
+    <div class="badge" id="typeBadge">Indlæser...</div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span>👤</span><h2>Dine oplysninger</h2></div>
+    <div class="card-body"><div class="info-grid" id="infoGrid"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span>📄</span><h2 id="sektionTitel">Erklæring</h2></div>
+    <div class="card-body">
+      <div id="punkt1"></div>
+      <button class="fold-btn" onclick="toggleFold()">
+        <span id="foldIko">▼</span>
+        <span id="foldTekst">Se hele dokumentet</span>
+      </button>
+      <div class="fold-indhold" id="foldIndhold"></div>
+      <div class="bekr-boks" id="bekrBoks"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span>✍️</span><h2>Din underskrift</h2></div>
+    <div class="card-body">
+      <p style="font-size:.75rem;color:#666;margin-bottom:8px">Tegn din underskrift med fingeren:</p>
+      <canvas id="signCanvas" class="sign-canvas"></canvas>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:5px">
+        <button class="btn-clear" onclick="clearSign()">✕ Ryd</button>
+        <span id="signStatus" style="font-size:.7rem;color:#2d7d52"></span>
+      </div>
+      <div class="sign-lbl" style="margin-top:12px">Bekræft dit fulde navn</div>
+      <input type="text" class="navn-felt" id="navnInput" placeholder="Skriv dit fulde navn..." oninput="tjekKlar()">
+      <button class="btn-accept" id="acceptBtn" onclick="accepter()" disabled>✓ Jeg accepterer og underskriver</button>
+      <p style="font-size:.65rem;color:#999;text-align:center;margin-top:6px">Dato: <strong id="datoVis"></strong></p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Ajour & Partners ApS</strong> (CVR: 46249054)<br>
+    Hørskætten 6B, 2630 Taastrup<br>
+    <a href="tel:+4525771234">25 77 12 34</a> · <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a><br>
+    Behandles fortroligt iht. GDPR
+  </div>
+</div>
+
+<div id="successSide">
+  <div style="font-size:4rem;margin-bottom:14px">✅</div>
+  <div style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">Tak for din underskrift!</div>
+  <div style="color:rgba(255,255,255,.85);font-size:.82rem;line-height:1.7;max-width:320px;text-align:center">Dit samtykke er modtaget og registreret hos<br><strong>Ajour & Partners ApS (CVR: 46249054)</strong></div>
+  <div class="success-dato" id="successDato"></div>
+</div>
+
+<script>
+const SB_URL='https://lbgzmbguqpjvruohkcuz.supabase.co';
+const SB_KEY='sb_publishable_lwqJV0nBDuvNFBIwjp-0nw_odmT9Ymi';
+
+const TYPER={
+  undersoegelse:{ico:'🔍',titel:'Undersøgelsesfuldmagt',sektion:'Fuldmagtens indhold',
+    tekst:[
+      {t:'1. Formål',tx:'Ajour & Partners ApS (CVR: 46249054) bemyndiges hermed til at undersøge og vurdere forsikringsmarkedet på vegne af fuldmagtsgiver, herunder at indhente, modtage og afgive alle relevante oplysninger og dokumenter i forbindelse med gennemgang af eksisterende forsikringsforhold samt indhentning af nye tilbud.'},
+      {t:'2. Beføjelser og dataadgang',tx:'Fuldmagten giver Ajour & Partners ApS (CVR: 46249054) ret til at indhente samtlige oplysninger om fuldmagtsgivers forsikringsforhold, herunder policer, præmier, vilkår, selvrisici, dækningsomfang, skadeshistorik, skadesstatistikker, skadereserver, risikovurderinger og øvrige relevante data.'},
+      {t:'3. Omfang',tx:'Fuldmagten gælder samtlige eksisterende forsikringsaftaler tilhørende fuldmagtsgiver. Ajour & Partners ApS kan indhente tilbud hos et vilkårligt antal forsikringsselskaber.'},
+      {t:'4. Begrænsninger',tx:'Fuldmagten giver ikke Ajour & Partners ApS beføjelse til selvstændigt at opsige forsikringer eller indgå nye aftaler uden forudgående skriftlig accept.'},
+      {t:'5. Nuværende mægler / agent',tx:'Fuldmagtsgiver ønsker ikke at nuværende mægler orienteres. Den nuværende mægler har ikke ret til at afvise udlevering af oplysninger, idet denne fuldmagt udgør det fornødne grundlag herfor.'},
+      {t:'6. Tilbagekaldelse og varighed',tx:'Fuldmagten er gyldig indtil den skriftligt tilbagekaldes. Den bortfalder automatisk ved 12 måneders inaktivitet.'},
+    ],
+    bekraeftelse:'Undertegnede bekræfter at have læst og forstået fuldmagtens indhold og giver hermed Ajour & Partners ApS (CVR: 46249054) tilladelse til at handle i overensstemmelse med ovenstående beføjelser.'
+  },
+  markedsfoering:{ico:'📢',titel:'Markedsføringssamtykke',sektion:'Samtykkeerklæring',
+    tekst:[
+      {t:'1. Formål',tx:'Ajour & Partners ApS (CVR: 46249054) indhenter hermed dit samtykke til at kontakte dig med relevante forsikringstilbud, nyheder og rådgivning.'},
+      {t:'2. Hvad du accepterer',tx:'Du giver tilladelse til at sende dig tilbud, nyheder, invitationer til events og nyhedsbreve.'},
+      {t:'3. Kontaktform',tx:'Vi kontakter dig via e-mail, SMS og/eller telefon. Du kan til enhver tid framelde dig.'},
+      {t:'4. Ingen videregivelse',tx:'Dine oplysninger videregives ikke til tredjepart.'},
+      {t:'5. Tilbagekaldelse',tx:'Kontakt os på info@ajourogpartners.dk eller tlf. 25 77 12 34.'},
+      {t:'6. Rettigheder',tx:'Dataansvarlig: Ajour & Partners ApS (CVR: 46249054). Ret til indsigt og klage til Datatilsynet. Hjemmel: GDPR art. 6(1)(a).'},
+    ],
+    bekraeftelse:'Undertegnede giver hermed Ajour & Partners ApS (CVR: 46249054) tilladelse til at kontakte sig med markedsføring.'
+  },
+  information:{ico:'📋',titel:'Informationssamtykke',sektion:'Samtykkeerklæring',
+    tekst:[
+      {t:'1. Formål',tx:'Ajour & Partners ApS (CVR: 46249054) indhenter samtykke til behandling af personoplysninger til brug for forsikringsrådgivning.'},
+      {t:'2. Oplysninger og rettigheder',tx:'Vi behandler navn, adresse, CPR/CVR, kontaktoplysninger og forsikringshistorik. Du har ret til indsigt og sletning. Kontakt info@ajourogpartners.dk.'},
+    ],
+    bekraeftelse:'Undertegnede giver hermed Ajour & Partners ApS (CVR: 46249054) tilladelse til behandling af personoplysninger.'
+  },
+  ajour_service:{ico:'🔄',titel:'Ajour-Service Samtykke',sektion:'Samtykkeerklæring',
+    tekst:[
+      {t:'1. Hvad er Ajour-Service',tx:'Ajour & Partners ApS kontakter dig 90 dage før dit forsikringsforfald for at gennemgå dine forsikringer.'},
+      {t:'2. Kontakt og afmelding',tx:'Vi kontakter dig primært via telefon. Du kan til enhver tid afmelde Ajour-Service uden det påvirker dine forsikringer.'},
+    ],
+    bekraeftelse:'Undertegnede giver hermed Ajour & Partners ApS (CVR: 46249054) tilladelse til at kontakte sig i forbindelse med Ajour-Service.'
+  }
+};
+
+function getP(n){return new URLSearchParams(window.location.search).get(n)||'';}
+const type=getP('type')||'undersoegelse';
+const kid=getP('kid');
+const navn=decodeURIComponent(getP('navn'));
+const email=decodeURIComponent(getP('email'));
+const tlf=decodeURIComponent(getP('tlf'));
+const adresse=decodeURIComponent(getP('adresse'));
+const postnr=decodeURIComponent(getP('postnr'));
+const sid=getP('sid')||Date.now().toString(36);
+
+window.onload=()=>{
+  const T=TYPER[type]||TYPER.undersoegelse;
+  document.getElementById('heroIco').textContent=T.ico;
+  document.getElementById('heroTitel').textContent=T.titel;
+  document.getElementById('typeBadge').textContent=T.titel;
+  document.getElementById('sektionTitel').textContent=T.sektion;
+  if(navn) document.getElementById('kundeNavn').textContent=navn;
+  const nu=new Date();
+  document.getElementById('datoVis').textContent=nu.toLocaleDateString('da-DK',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const grid=document.getElementById('infoGrid');
+  [['Navn',navn],['E-mail',email],['Telefon',tlf],['Adresse',adresse],['Postnr. / By',postnr]].filter(([,v])=>v).forEach(([l,v])=>{
+    grid.innerHTML+=`<div class="info-felt"><div class="info-lbl">${l}</div><div class="info-val">${v}</div></div>`;
+  });
+  if(!grid.innerHTML) grid.innerHTML='<p style="color:#888;font-size:.78rem">Dine oplysninger er registreret.</p>';
+  const p1=T.tekst[0];
+  document.getElementById('punkt1').innerHTML=`<div class="punkt"><div class="punkt-titel">${p1.t}</div><div class="punkt-tekst">${p1.tx}</div></div>`;
+  const fold=document.getElementById('foldIndhold');
+  T.tekst.slice(1).forEach(p=>{
+    fold.innerHTML+=`<div class="punkt"><div class="punkt-titel">${p.t}</div><div class="punkt-tekst">${p.tx}</div></div>`;
+  });
+  document.getElementById('bekrBoks').textContent=T.bekraeftelse;
+  initCanvas();
+};
+
+function toggleFold(){
+  const el=document.getElementById('foldIndhold');
+  const aaben=el.classList.toggle('aaben');
+  document.getElementById('foldIko').textContent=aaben?'▲':'▼';
+  document.getElementById('foldTekst').textContent=aaben?'Skjul dokumentet':'Se hele dokumentet';
+}
+
+let drawing=false,signed=false;
+const canvas=document.getElementById('signCanvas');
+const ctx=canvas.getContext('2d');
+
+function initCanvas(){
+  canvas.width=canvas.offsetWidth*window.devicePixelRatio;
+  canvas.height=canvas.offsetHeight*window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
+  ctx.strokeStyle='#002D4B';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.fillStyle='#ccc';ctx.font='13px Montserrat,sans-serif';ctx.textAlign='center';
+  ctx.fillText('Tegn din underskrift her...',canvas.offsetWidth/2,canvas.offsetHeight/2);
+}
+
+function pos(e){const r=canvas.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
+canvas.addEventListener('mousedown',e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=true;canvas.classList.add('signed');}});
+canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();tjekKlar();});
+canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=true;canvas.classList.add('signed');}},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();tjekKlar();},{passive:false});
+canvas.addEventListener('touchend',()=>{drawing=false;tjekKlar();});
+
+function clearSign(){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=false;canvas.classList.remove('signed');initCanvas();tjekKlar();}
+function tjekKlar(){
+  const ok=signed&&document.getElementById('navnInput').value.trim().length>=2;
+  document.getElementById('acceptBtn').disabled=!ok;
+  document.getElementById('signStatus').textContent=signed?'✓ Underskrift registreret':'';
+}
+
+async function accepter(){
+  const navnVal=document.getElementById('navnInput').value.trim();
+  if(!signed||!navnVal)return;
+  document.getElementById('acceptBtn').disabled=true;
+  document.getElementById('acceptBtn').textContent='⏳ Gemmer...';
+  const underskrift=canvas.toDataURL('image/png');
+  const nu=new Date();
+  const data={samtykkeid:sid,type:type,kunde_id:kid,kunde_navn:navnVal,navn:navn,email:email,tlf:tlf,adresse:adresse,postnr:postnr,underskrift:underskrift,dato:nu.toISOString()};
+  try{
+    const res=await fetch(SB_URL+'/rest/v1/samtykker',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(data)
+    });
+    if(!res.ok){const err=await res.text();console.error('Supabase fejl:',res.status,err);}
+    else{console.log('Samtykke gemt OK');}
+  }catch(e){console.error('Fejl:',e);}
+  document.getElementById('mainContent').style.display='none';
+  document.getElementById('successSide').classList.add('show');
+  document.getElementById('successDato').textContent=nu.toLocaleDateString('da-DK',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+</script>
+</body>
+</html>
