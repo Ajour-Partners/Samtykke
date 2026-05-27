@@ -4,110 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Samtykke – Ajour & Partners</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;background:linear-gradient(135deg,#061a2e 0%,#0a2540 30%,#0d2f4f 60%,#163a5e 100%);display:flex;align-items:flex-start;justify-content:center;padding:120px 16px 60px}
-.container{width:100%;max-width:720px;color:#fff}
-.heading{text-align:center;color:#fff;font-size:10pt;font-weight:500;letter-spacing:.05em;margin-bottom:18px;text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:.85}
-.meta-bar{background:rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.12);padding:9px 18px;font-size:8pt;color:rgba(255,255,255,.8);line-height:1.8;border-radius:8px 8px 0 0}
-.meta-bar b{color:#fff}
-.card-body{padding:18px 4px 22px}
-.punkt-1{padding-bottom:13px;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:13px}
-.punkt-1-title{font-weight:700;font-size:9pt;color:#a8d4f0;margin-bottom:5px}
-.punkt-1-text{font-size:9pt;color:rgba(255,255,255,.88);line-height:1.65}
-.fold-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:9px 14px;cursor:pointer;font-size:9pt;color:rgba(255,255,255,.9);width:100%;text-align:left;margin-bottom:13px;transition:background .2s;font-family:inherit}
-.fold-btn:hover{background:rgba(255,255,255,.15)}
-.fold-arrow{margin-left:auto;transition:transform .25s}
-.fold-arrow.open{transform:rotate(180deg)}
-.rest-sections{display:none}
-.rest-sections.open{display:block}
-.section{border-top:1px solid rgba(255,255,255,.12);padding:9px 0}
-.section:first-child{border-top:none;padding-top:3px}
-.section-title{font-weight:700;font-size:9pt;color:#a8d4f0;margin-bottom:4px}
-.section-text{font-size:9pt;color:rgba(255,255,255,.85);line-height:1.65}
-.sign-box{margin-top:16px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:14px 16px;background:rgba(0,0,0,.1)}
-.sign-title{font-weight:700;color:#fff;font-size:10pt;margin-bottom:4px}
-.sign-sub{font-size:8.5pt;color:rgba(255,255,255,.7);margin-bottom:10px}
-.sign-info{font-size:9pt;color:rgba(255,255,255,.85);margin-bottom:10px;line-height:1.8}
-#signCanvas{border:1px solid rgba(255,255,255,.3);border-radius:4px;width:100%;max-width:420px;height:110px;display:block;background:rgba(255,255,255,.92);touch-action:none;cursor:crosshair}
-.naam-wrap{margin-top:13px}
-.naam-label{display:block;font-size:8.5pt;color:rgba(255,255,255,.75);margin-bottom:5px}
-.naam-req{color:#f87171}
-#navnInput{width:100%;max-width:420px;display:block;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.35);border-radius:4px;padding:9px 12px;font-size:10pt;letter-spacing:.07em;color:#002D4B;font-weight:600;font-family:inherit;outline:none}
-#navnError{display:none;color:#f87171;font-size:8pt;margin-top:4px}
-.sign-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center}
-.btn-clear{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:5px;cursor:pointer;font-size:8.5pt;color:rgba(255,255,255,.85);font-family:inherit}
-#acceptBtn{background:#fff;color:#002D4B;border:none;padding:8px 22px;border-radius:5px;cursor:pointer;font-size:9.5pt;font-weight:700;font-family:inherit}
-#acceptBtn:hover{background:#e8f2fa}
-#acceptBtn:disabled{opacity:.5;cursor:not-allowed}
-#errorBox{display:none;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);border-radius:5px;padding:10px;font-size:9pt;color:#fca5a5;margin-top:10px}
-.footer-note{text-align:center;font-size:7.5pt;color:rgba(255,255,255,.45);margin-top:18px}
-#successSide{display:none;min-height:100vh;background:linear-gradient(135deg,#061a2e 0%,#0a2540 30%,#0d2f4f 60%,#163a5e 100%);position:fixed;top:0;left:0;width:100%;align-items:center;justify-content:center;padding:40px 16px;text-align:center;color:#fff;flex-direction:column}
-#successSide.show{display:flex}
-.success-check{font-size:54px;margin-bottom:18px;line-height:1}
-.success-h1{font-size:20pt;font-weight:700;margin-bottom:12px;text-shadow:0 1px 8px rgba(0,0,0,.4)}
-.success-sub{color:rgba(255,255,255,.85);font-size:10pt;line-height:1.7;margin-bottom:24px;max-width:480px}
-.success-info{background:rgba(0,0,0,.15);border-left:3px solid rgba(255,255,255,.4);border-radius:0 6px 6px 0;padding:13px 18px;text-align:left;font-size:9.5pt;color:rgba(255,255,255,.85);line-height:1.85;margin-bottom:20px;max-width:480px;width:100%}
-.success-info strong{color:#fff}
-.success-info a{color:#a8d4f0}
-</style>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;background:linear-gradient(135deg,#061a2e 0%,#0a2540 30%,#0d2f4f 60%,#163a5e 100%);display:flex;align-items:flex-start;justify-content:center;padding:120px 16px 60px}.container{width:100%;max-width:720px;color:#fff}.heading{text-align:center;color:#fff;font-size:10pt;font-weight:500;letter-spacing:.05em;margin-bottom:18px;text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:.85}.meta-bar{background:rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.12);padding:9px 18px;font-size:8pt;color:rgba(255,255,255,.8);line-height:1.8;border-radius:8px 8px 0 0}.meta-bar b{color:#fff}.card-body{padding:18px 4px 22px}.punkt-1{padding-bottom:13px;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:13px}.punkt-1-title{font-weight:700;font-size:9pt;color:#a8d4f0;margin-bottom:5px}.punkt-1-text{font-size:9pt;color:rgba(255,255,255,.88);line-height:1.65}.fold-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:9px 14px;cursor:pointer;font-size:9pt;color:rgba(255,255,255,.9);width:100%;text-align:left;margin-bottom:13px;transition:background .2s;font-family:inherit}.fold-btn:hover{background:rgba(255,255,255,.15)}.fold-arrow{margin-left:auto;transition:transform .25s}.fold-arrow.open{transform:rotate(180deg)}.rest-sections{display:none}.rest-sections.open{display:block}.section{border-top:1px solid rgba(255,255,255,.12);padding:9px 0}.section:first-child{border-top:none;padding-top:3px}.section-title{font-weight:700;font-size:9pt;color:#a8d4f0;margin-bottom:4px}.section-text{font-size:9pt;color:rgba(255,255,255,.85);line-height:1.65}.sign-box{margin-top:16px;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:14px 16px;background:rgba(0,0,0,.1)}.sign-title{font-weight:700;color:#fff;font-size:10pt;margin-bottom:4px}.sign-sub{font-size:8.5pt;color:rgba(255,255,255,.7);margin-bottom:10px}.sign-info{font-size:9pt;color:rgba(255,255,255,.85);margin-bottom:10px;line-height:1.8}#signCanvas{border:1px solid rgba(255,255,255,.3);border-radius:4px;width:100%;max-width:420px;height:110px;display:block;background:rgba(255,255,255,.92);touch-action:none;cursor:crosshair}.naam-wrap{margin-top:13px}.naam-label{display:block;font-size:8.5pt;color:rgba(255,255,255,.75);margin-bottom:5px}.naam-req{color:#f87171}#navnInput{width:100%;max-width:420px;display:block;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.35);border-radius:4px;padding:9px 12px;font-size:10pt;letter-spacing:.07em;color:#002D4B;font-weight:600;font-family:inherit;outline:none}#navnError{display:none;color:#f87171;font-size:8pt;margin-top:4px}.sign-actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center}.btn-clear{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:5px;cursor:pointer;font-size:8.5pt;color:rgba(255,255,255,.85);font-family:inherit}#acceptBtn{background:#fff;color:#002D4B;border:none;padding:8px 22px;border-radius:5px;cursor:pointer;font-size:9.5pt;font-weight:700;font-family:inherit}#acceptBtn:hover{background:#e8f2fa}#acceptBtn:disabled{opacity:.5;cursor:not-allowed}#errorBox{display:none;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);border-radius:5px;padding:10px;font-size:9pt;color:#fca5a5;margin-top:10px}.footer-note{text-align:center;font-size:7.5pt;color:rgba(255,255,255,.45);margin-top:18px}#successSide{display:none;min-height:100vh;background:linear-gradient(135deg,#061a2e 0%,#0a2540 30%,#0d2f4f 60%,#163a5e 100%);position:fixed;top:0;left:0;width:100%;align-items:center;justify-content:center;padding:40px 16px;text-align:center;color:#fff;flex-direction:column}#successSide.show{display:flex}.success-check{font-size:54px;margin-bottom:18px;line-height:1}.success-h1{font-size:20pt;font-weight:700;margin-bottom:12px}.success-sub{color:rgba(255,255,255,.85);font-size:10pt;line-height:1.7;margin-bottom:24px;max-width:480px}.success-info{background:rgba(0,0,0,.15);border-left:3px solid rgba(255,255,255,.4);border-radius:0 6px 6px 0;padding:13px 18px;text-align:left;font-size:9.5pt;color:rgba(255,255,255,.85);line-height:1.85;margin-bottom:20px;max-width:480px;width:100%}.success-info strong{color:#fff}.success-info a{color:#a8d4f0}</style>
 </head>
 <body>
 <div id="mainContent" class="container">
-  <div class="heading" id="mainHeading">Undersøgelsesfuldmagt til Ajour &amp; Partners ApS · CVR: 46249054</div>
-  <div class="meta-bar">
-    <b>Kunde:</b> <span id="visNavn">–</span> &nbsp;·&nbsp;
-    <b>Email:</b> <span id="visEmail">–</span> &nbsp;·&nbsp;
-    <b>Adresse:</b> <span id="visAdresse">–</span>
-  </div>
+  <div class="heading" id="mainHeading">Unders&oslash;gelsesfuldmagt til Ajour &amp; Partners ApS &middot; CVR: 46249054</div>
+  <div class="meta-bar"><b>Kunde:</b> <span id="visNavn"></span> &nbsp;&middot;&nbsp; <b>Email:</b> <span id="visEmail"></span> &nbsp;&middot;&nbsp; <b>Adresse:</b> <span id="visAdresse"></span></div>
   <div class="card-body">
-    <div class="punkt-1">
-      <div class="punkt-1-title">1. Formål</div>
-      <div class="punkt-1-text" id="punkt1Text"></div>
-    </div>
-    <button class="fold-btn" id="foldBtn" onclick="toggleRest()">
-      <span id="foldLabel">📋 Vis øvrige betingelser (punkt 2–6)</span>
-      <span class="fold-arrow" id="foldArrow">▼</span>
-    </button>
-    <div class="rest-sections" id="restSections">
-      <div id="sektionListe"></div>
-    </div>
+    <div class="punkt-1"><div class="punkt-1-title">1. Form&aring;l</div><div class="punkt-1-text" id="punkt1Text"></div></div>
+    <button class="fold-btn" onclick="toggleRest()"><span id="foldLabel">Vis &oslash;vrige betingelser (punkt 2&ndash;6)</span><span class="fold-arrow" id="foldArrow">&#9660;</span></button>
+    <div class="rest-sections" id="restSections"><div id="sektionListe"></div></div>
     <div class="sign-box">
-      <div class="sign-title">✍️ Underskrift og bekræftelse</div>
-      <div class="sign-sub">Undertegnede bekræfter at have læst og accepteret ovennævnte.</div>
-      <div class="sign-info">
-        <b>Navn:</b> <span id="kundeNavn">–</span><br>
-        <b>Dato:</b> <span id="datoVis">–</span>
-      </div>
-      <canvas id="signCanvas" width="840" height="220"></canvas>
+      <div class="sign-title">Underskrift og bekr&aelig;ftelse</div>
+      <div class="sign-sub">Undertegnede bekr&aelig;fter at have l&aelig;st og accepteret ovenst&aring;ende.</div>
+      <div class="sign-info"><b>Navn:</b> <span id="kundeNavn"></span><br><b>Dato:</b> <span id="datoVis"></span></div>
+      <canvas id="signCanvas"></canvas>
       <div class="naam-wrap">
-        <label class="naam-label" for="navnInput">
-          Navn med blokbogstaver <span class="naam-req">*</span>
-        </label>
+        <label class="naam-label" for="navnInput">Navn med blokbogstaver <span class="naam-req">*</span></label>
         <input id="navnInput" type="text" placeholder="SKRIV DIT FULDE NAVN HER" oninput="this.value=this.value.toUpperCase()" autocomplete="name"/>
-        <div id="navnError">⚠ Udfyld venligst dit navn</div>
+        <div id="navnError">Udfyld venligst dit navn</div>
       </div>
       <div class="sign-actions">
-        <button class="btn-clear" onclick="clearCanvas()">🗑 Ryd</button>
-        <button id="acceptBtn" onclick="accepter()">✓ Jeg accepterer og underskriver</button>
+        <button class="btn-clear" onclick="clearCanvas()">Ryd</button>
+        <button id="acceptBtn" onclick="accepter()">&#10003; Jeg accepterer og underskriver</button>
       </div>
       <div id="errorBox"></div>
     </div>
   </div>
-  <div class="footer-note">Ajour &amp; Partners ApS · CVR: 46249054 · Behandles fortroligt iht. GDPR</div>
+  <div class="footer-note">Ajour &amp; Partners ApS &middot; CVR: 46249054 &middot; Behandles fortroligt iht. GDPR</div>
 </div>
 <div id="successSide">
-  <div class="success-check">✅</div>
+  <div class="success-check">&#9989;</div>
   <h1 class="success-h1">Tak for din underskrift!</h1>
-  <p class="success-sub">Din undersøgelsesfuldmagt er modtaget og registreret.<br>Vi er nu bemyndiget til at gennemgå dine forsikringsforhold og indhente nye tilbud på dine vegne.</p>
-  <div class="success-info">
-    <strong>Hvad sker der nu?</strong><br>
-    Ajour &amp; Partners ApS kontakter dig inden for 1–2 hverdage.<br><br>
-    <strong>Spørgsmål?</strong><br>
-    Kontakt os på <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a> eller 25 77 12 34.<br><br>
-    <span id="successDato" style="opacity:.7;font-size:8.5pt"></span>
-  </div>
-  <div class="footer-note">Ajour &amp; Partners ApS · CVR: 46249054 · Behandles fortroligt iht. GDPR</div>
+  <p class="success-sub">Din unders&oslash;gelsesfuldmagt er modtaget og registreret.<br>Vi er nu bemyndiget til at gennemg&aring; dine forsikringsforhold og indhente nye tilbud p&aring; dine vegne.</p>
+  <div class="success-info"><strong>Hvad sker der nu?</strong><br>Ajour &amp; Partners ApS kontakter dig inden for 1&ndash;2 hverdage.<br><br><strong>Sp&oslash;rgsm&aring;l?</strong><br>Kontakt os p&aring; <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a> eller 25 77 12 34.<br><br><span id="successDato" style="opacity:.7;font-size:8.5pt"></span></div>
+  <div class="footer-note">Ajour &amp; Partners ApS &middot; CVR: 46249054 &middot; Behandles fortroligt iht. GDPR</div>
 </div>
 <script>
 
@@ -353,6 +284,28 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;signed=
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();},{passive:false});
 canvas.addEventListener('touchend',()=>drawing=false);
 function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);signed=false;}
+
+window.addEventListener('load', function() {
+  document.getElementById('visNavn').textContent = navn || '–';
+  document.getElementById('visEmail').textContent = email || '–';
+  var adr = adresse || '';
+  if (postnr) adr += (adr ? ', ' : '') + postnr;
+  document.getElementById('visAdresse').textContent = adr || '–';
+});
+var canvas = document.getElementById('signCanvas');
+canvas.width = 840; canvas.height = 220;
+var ctx = canvas.getContext('2d');
+var drawing = false; var signed = false;
+function getPos(e) { var r=canvas.getBoundingClientRect(); var sx=canvas.width/r.width,sy=canvas.height/r.height; if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy}; return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy}; }
+canvas.addEventListener('mousedown',function(e){drawing=true;signed=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+canvas.addEventListener('mousemove',function(e){if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();});
+canvas.addEventListener('mouseup',function(){drawing=false;});
+canvas.addEventListener('mouseleave',function(){drawing=false;});
+canvas.addEventListener('touchstart',function(e){e.preventDefault();drawing=true;signed=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove',function(e){e.preventDefault();if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();},{passive:false});
+canvas.addEventListener('touchend',function(){drawing=false;});
+function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);signed=false;}
+function toggleRest(){var s=document.getElementById('restSections');var a=document.getElementById('foldArrow');var l=document.getElementById('foldLabel');s.classList.toggle('open');a.classList.toggle('open');l.textContent=s.classList.contains('open')?'Skjul betingelser':'Vis øvrige betingelser (punkt 2–6)';}
 </script>
 </body>
 </html>
