@@ -148,9 +148,11 @@ const canvas=document.getElementById('signCanvas');
 const ctx=canvas.getContext('2d');
 
 function initCanvas(){
-  canvas.width=canvas.offsetWidth*window.devicePixelRatio;
-  canvas.height=canvas.offsetHeight*window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=canvas.offsetWidth*dpr;
+  canvas.height=canvas.offsetHeight*dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
   ctx.strokeStyle='#002D4B';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
   ctx.fillStyle='#bbb';ctx.font='13px sans-serif';ctx.textAlign='center';
   ctx.fillText('Tegn din underskrift her...',canvas.offsetWidth/2,canvas.offsetHeight/2);
@@ -163,7 +165,7 @@ canvas.addEventListener('mouseup',()=>{drawing=false;signed=true;tjekKlar();});
 canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=true;canvas.classList.add('signed');}},{passive:false});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();tjekKlar();},{passive:false});
 canvas.addEventListener('touchend',()=>{drawing=false;signed=true;tjekKlar();});
-function clearSign(){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=false;canvas.classList.remove('signed');initCanvas();tjekKlar();}
+function clearSign(){signed=false;canvas.classList.remove('signed');initCanvas();tjekKlar();}
 function tjekKlar(){
   const ok=signed&&document.getElementById('navnInput').value.trim().length>=2;
   document.getElementById('acceptBtn').disabled=!ok;
