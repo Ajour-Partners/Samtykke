@@ -18,7 +18,7 @@
       <div class="sign-title">Underskrift og bekr&aelig;ftelse</div>
       <div class="sign-sub">Undertegnede bekr&aelig;fter at have l&aelig;st og accepteret ovenst&aring;ende.</div>
       <div class="sign-info"><b>Navn:</b> <span id="kundeNavn"></span><br><b>Dato:</b> <span id="datoVis"></span></div>
-      <canvas id="signCanvas"></canvas>
+      <canvas id="signCanvas" width="840" height="220"></canvas>
       <div class="naam-wrap">
         <label class="naam-label" for="navnInput">Navn med blokbogstaver <span class="naam-req">*</span></label>
         <input id="navnInput" type="text" placeholder="SKRIV DIT FULDE NAVN HER" oninput="this.value=this.value.toUpperCase()" autocomplete="name"/>
@@ -272,40 +272,6 @@ function toggleRest(){
   a.classList.toggle('open');
   l.textContent=s.classList.contains('open')?'📋 Skjul betingelser':'📋 Vis øvrige betingelser (punkt 2–6)';
 }
-const canvas=document.getElementById('signCanvas');
-const ctx=canvas.getContext('2d');
-let drawing=false,signed=false;
-function getPos(e){const r=canvas.getBoundingClientRect();const sx=canvas.width/r.width,sy=canvas.height/r.height;if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};}
-canvas.addEventListener('mousedown',e=>{drawing=true;signed=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
-canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();});
-canvas.addEventListener('mouseup',()=>drawing=false);
-canvas.addEventListener('mouseleave',()=>drawing=false);
-canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;signed=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();},{passive:false});
-canvas.addEventListener('touchend',()=>drawing=false);
-function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);signed=false;}
-
-window.addEventListener('load', function() {
-  document.getElementById('visNavn').textContent = navn || '–';
-  document.getElementById('visEmail').textContent = email || '–';
-  var adr = adresse || '';
-  if (postnr) adr += (adr ? ', ' : '') + postnr;
-  document.getElementById('visAdresse').textContent = adr || '–';
-});
-var canvas = document.getElementById('signCanvas');
-canvas.width = 840; canvas.height = 220;
-var ctx = canvas.getContext('2d');
-var drawing = false; var signed = false;
-function getPos(e) { var r=canvas.getBoundingClientRect(); var sx=canvas.width/r.width,sy=canvas.height/r.height; if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy}; return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy}; }
-canvas.addEventListener('mousedown',function(e){drawing=true;signed=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
-canvas.addEventListener('mousemove',function(e){if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();});
-canvas.addEventListener('mouseup',function(){drawing=false;});
-canvas.addEventListener('mouseleave',function(){drawing=false;});
-canvas.addEventListener('touchstart',function(e){e.preventDefault();drawing=true;signed=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
-canvas.addEventListener('touchmove',function(e){e.preventDefault();if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#001e38';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.stroke();},{passive:false});
-canvas.addEventListener('touchend',function(){drawing=false;});
-function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);signed=false;}
-function toggleRest(){var s=document.getElementById('restSections');var a=document.getElementById('foldArrow');var l=document.getElementById('foldLabel');s.classList.toggle('open');a.classList.toggle('open');l.textContent=s.classList.contains('open')?'Skjul betingelser':'Vis øvrige betingelser (punkt 2–6)';}
 </script>
 </body>
 </html>
