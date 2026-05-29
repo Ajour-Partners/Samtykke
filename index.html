@@ -25,7 +25,7 @@
         <div id="navnError">Udfyld venligst dit navn</div>
       </div>
       <div class="sign-actions">
-        <button class="btn-clear" onclick="clearCanvas()">Ryd</button>
+        <button class="btn-clear" onclick="clearSign()">Ryd</button>
         <button id="acceptBtn" onclick="accepter()">&#10003; Jeg accepterer og underskriver</button>
       </div>
       <div id="errorBox"></div>
@@ -34,11 +34,21 @@
   <div class="footer-note">Ajour &amp; Partners ApS &middot; CVR: 46249054 &middot; Behandles fortroligt iht. GDPR</div>
 </div>
 <div id="successSide">
-  <div class="success-check">&#9989;</div>
-  <h1 class="success-h1">Tak for din underskrift!</h1>
-  <p class="success-sub">Din unders&oslash;gelsesfuldmagt er modtaget og registreret.<br>Vi er nu bemyndiget til at gennemg&aring; dine forsikringsforhold og indhente nye tilbud p&aring; dine vegne.</p>
-  <div class="success-info"><strong>Hvad sker der nu?</strong><br>Ajour &amp; Partners ApS kontakter dig inden for 1&ndash;2 hverdage.<br><br><strong>Sp&oslash;rgsm&aring;l?</strong><br>Kontakt os p&aring; <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a> eller 25 77 12 34.<br><br><span id="successDato" style="opacity:.7;font-size:8.5pt"></span></div>
+<div class="container">
+  <div class="check">&#9989;</div>
+  <h1>Tak for din underskrift!</h1>
+  <p class="sub">
+    Din unders&#248;gelsesfuldmagt er modtaget og registreret.<br>
+    Vi er nu bemyndiget til at gennemg&#229; dine forsikringsforhold og indhente nye tilbud p&#229; dine vegne.
+  </p>
+  <div class="info-box">
+    <strong>Hvad sker der nu?</strong><br>
+    Ajour &amp; Partners ApS kontakter dig inden for 1&#8211;2 hverdage med en status p&#229; gennemgangen.<br><br>
+    <strong>Sp&#248;rgsm&#229;l?</strong><br>
+    Kontakt os p&#229; <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a> eller 25 77 12 34.
+  </div>
   <div class="footer-note">Ajour &amp; Partners ApS &middot; CVR: 46249054 &middot; Behandles fortroligt iht. GDPR</div>
+</div>
 </div>
 <script>
 
@@ -147,12 +157,12 @@ function initCanvas(){
 }
 
 function pos(e){const r=canvas.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
-canvas.addEventListener('mousedown',e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=true;canvas.classList.add('signed');}});
+canvas.addEventListener('mousedown',e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.getBoundingClientRect().width,canvas.getBoundingClientRect().height);signed=true;canvas.classList.add('signed');}});
 canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();tjekKlar();});
-canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('mouseup',()=>{drawing=false;signed=true;tjekKlar();});
 canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);if(!signed){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=true;canvas.classList.add('signed');}},{passive:false});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();tjekKlar();},{passive:false});
-canvas.addEventListener('touchend',()=>{drawing=false;tjekKlar();});
+canvas.addEventListener('touchend',()=>{drawing=false;signed=true;tjekKlar();});
 function clearSign(){ctx.clearRect(0,0,canvas.offsetWidth,canvas.offsetHeight);signed=false;canvas.classList.remove('signed');initCanvas();tjekKlar();}
 function tjekKlar(){
   const ok=signed&&document.getElementById('navnInput').value.trim().length>=2;
@@ -163,12 +173,12 @@ function tjekKlar(){
 // Compress canvas to JPEG at low quality to reduce size
 function getCompressedSignature(){
   const tmp=document.createElement('canvas');
-  tmp.width=400;tmp.height=130;
+  tmp.width=canvas.width;tmp.height=canvas.height;
   const tc=tmp.getContext('2d');
   tc.fillStyle='#fff';
-  tc.fillRect(0,0,400,130);
-  tc.drawImage(canvas,0,0,canvas.offsetWidth,canvas.offsetHeight,0,0,400,130);
-  return tmp.toDataURL('image/jpeg',0.5); // JPEG at 50% quality = ~15KB
+  tc.fillRect(0,0,tmp.width,tmp.height);
+  tc.drawImage(canvas,0,0);
+  return tmp.toDataURL('image/png',1.0);
 }
 
 async function accepter(){
