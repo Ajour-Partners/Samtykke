@@ -308,6 +308,24 @@ async function submitSign() {
   const navn_kunde = params.get('navn') || navn;
   const type = params.get('type') || '';
   const now = new Date().toISOString();
+  const nowDK = new Date().toLocaleString('da-DK', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Hent IP og geo
+  let ipAdresse = 'Ukendt', by = '', land = '';
+  try {
+    const geoR = await fetch('https://ipapi.co/json/');
+    const geo = await geoR.json();
+    ipAdresse = geo.ip || 'Ukendt';
+    by = geo.city || '';
+    land = geo.country_name || '';
+  } catch(e) {
+    try {
+      const ipR = await fetch('https://api.ipify.org?format=json');
+      const ipD = await ipR.json();
+      ipAdresse = ipD.ip || 'Ukendt';
+    } catch(e2) {}
+  }
+  const sted = [by, land].filter(Boolean).join(', ') || 'Ukendt sted';
 
   const SB_URL = 'https://lbgzmbguqpjvruohkcuz.supabase.co';
   const SB_KEY = 'sb_publishable_lwqJV0nBDuvNFBIwjp-0nw_odmT9Ymi';
@@ -353,9 +371,14 @@ async function submitSign() {
     // Fortsæt alligevel - underskriften er taget
   }
 
-  // Gem i sessionStorage til tak-siden
+  // Gem alt i sessionStorage til tak-siden
   sessionStorage.setItem('underskriftNavn', navn);
   sessionStorage.setItem('underskriftData', signData);
+  sessionStorage.setItem('underskriftDato', nowDK);
+  sessionStorage.setItem('underskriftIP', ipAdresse);
+  sessionStorage.setItem('underskriftSted', sted);
+  sessionStorage.setItem('underskriftType', type || 'Samtykke');
+  sessionStorage.setItem('underskriftKundeNavn', navn_kunde);
 
   // Redirect til tak-siden
   window.location.href = 'tak.html?navn=' + encodeURIComponent(navn) + (sid ? '&sid=' + encodeURIComponent(sid) : '');
