@@ -288,7 +288,7 @@ canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!drawing)return
 canvas.addEventListener('touchend', ()=>drawing=false);
 function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
 
-function submitSign() {
+async function submitSign() {
   const navn = document.getElementById('navnInput').value.trim();
   const navnError = document.getElementById('navnError');
   if (!navn) {
@@ -299,17 +299,65 @@ function submitSign() {
   }
   navnError.style.display = 'none';
   document.getElementById('navnInput').style.borderColor = 'rgba(255,255,255,0.35)';
-  // Hent underskrift som base64
+
   const canvas = document.getElementById('signCanvas');
   const signData = canvas.toDataURL('image/png');
-  
-  // Gem underskrift i sessionStorage til tak-siden
-  sessionStorage.setItem('underskriftNavn', navn);
-  sessionStorage.setItem('underskriftData', signData);
-  
-  // Redirect til tak-siden
   const params = new URLSearchParams(window.location.search);
   const sid = params.get('sid') || '';
+  const kid = params.get('kid') || '';
+  const navn_kunde = params.get('navn') || navn;
+  const type = params.get('type') || '';
+  const now = new Date().toISOString();
+
+  const SB_URL = 'https://lbgzmbguqpjvruohkcuz.supabase.co';
+  const SB_KEY = 'sb_publishable_lwqJV0nBDuvNFBIwjp-0nw_odmT9Ymi';
+  const headers = {
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer ' + SB_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+
+  try {
+    // 1. Opdater aktivitet til underskrevet (hvis sid findes)
+    if (sid) {
+      await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({
+          titel: 'Samtykke underskrevet digitalt',
+          underskrift: signData,
+          underskrevet_navn: navn,
+          underskrevet_at: now
+        })
+      });
+    }
+
+    // 2. Opret dokument-post med underskrift (hvis kid findes)
+    if (kid) {
+      await fetch(SB_URL + '/rest/v1/dokumenter', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          kontakt_id: kid,
+          navn: 'Samtykke - ' + (type || 'underskrift') + ' - ' + navn_kunde,
+          type: 'samtykke',
+          underskrift: signData,
+          underskrevet_navn: navn,
+          oprettet_at: now
+        })
+      });
+    }
+  } catch(e) {
+    console.warn('Supabase opdatering fejlede:', e.message);
+    // Fortsæt alligevel - underskriften er taget
+  }
+
+  // Gem i sessionStorage til tak-siden
+  sessionStorage.setItem('underskriftNavn', navn);
+  sessionStorage.setItem('underskriftData', signData);
+
+  // Redirect til tak-siden
   window.location.href = 'tak.html?navn=' + encodeURIComponent(navn) + (sid ? '&sid=' + encodeURIComponent(sid) : '');
 }
 </script>
