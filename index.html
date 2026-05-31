@@ -357,6 +357,7 @@ async function submitSign() {
           adresse: params.get('adresse') || '',
           postnr: params.get('postnr') || '',
           cvr: params.get('cvr') || '',
+          noter: 'Sted: ' + sted + ' | IP: ' + ipAdresse + ' | ' + nowDK,
           oprettet_at: now
         })
       });
