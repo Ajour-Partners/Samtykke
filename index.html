@@ -325,7 +325,7 @@ async function submitSign() {
       ipAdresse = ipD.ip || 'Ukendt';
     } catch(e2) {}
   }
-  const sted = [by, land].filter(Boolean).join(', ') || 'Ukendt sted';
+  const sted = land || 'Ukendt land';
 
   const SB_URL = 'https://lbgzmbguqpjvruohkcuz.supabase.co';
   const SB_KEY = 'sb_publishable_lwqJV0nBDuvNFBIwjp-0nw_odmT9Ymi';
