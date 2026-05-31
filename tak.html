@@ -68,8 +68,8 @@
     Vi går straks i gang med at indhente tilbud til dig.
   </p>
 
-  <div class="info-box">
-    <strong>Hvad sker der nu?</strong><br>
+  <div class="info-box" id="signInfo" style="display:none">
+    <strong>Registreret for:</strong><br></strong><br>
     Ajour &amp; Partners ApS kontakter dig inden for 1–2 hverdage med en status på gennemgangen.<br><br>
     <strong>Spørgsmål?</strong><br>
     Kontakt os på <a href="mailto:info@ajourogpartners.dk">info@ajourogpartners.dk</a> eller 25 77 12 34.
@@ -94,7 +94,7 @@ document.getElementById('docSted').textContent = sted;
 if(signData) document.getElementById('docSign').src = signData;
 
 function downloadPDF() {
-  const signImg = signData ? '<img src="' + signData + '" style="max-width:100%;border:1px solid #ccc;border-radius:4px;display:block" alt="Underskrift"/>' : '<p style="color:#888">Ingen underskrift gemt</p>';
+  const signImg = signData ? '<img src="' + signData + '" style="width:640px;max-width:100%;border:2px solid #002D4B;border-radius:4px;display:block" alt="Underskrift"/>' : '<p style="color:#888">Ingen underskrift gemt</p>';
   const html = '<!DOCTYPE html><html lang="da"><head><meta charset="UTF-8"><title>Samtykke - ' + kundeNavn + '</title>'
     + '<style>body{font-family:Arial,sans-serif;max-width:620px;margin:40px auto;color:#333;padding:0 20px}'
     + '.header{text-align:center;margin-bottom:28px;border-bottom:3px solid #002D4B;padding-bottom:20px}'
