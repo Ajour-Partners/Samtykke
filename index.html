@@ -337,32 +337,39 @@ async function submitSign() {
   };
 
   try {
-    // 1. Opdater aktivitet til underskrevet (hvis sid findes)
+    // 1. Gem underskrift i samtykker-tabellen
+    if (kid) {
+      await fetch(SB_URL + '/rest/v1/samtykker', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          samtykkeid: sid || (kid + '-' + Date.now()),
+          type: type || 'undersoegelse',
+          kunde_id: kid,
+          kunde_navn: navn_kunde,
+          underskrift: signData,
+          dato: now,
+          ip: ipAdresse,
+          user_agent: navigator.userAgent.substring(0,200),
+          navn: navn,
+          email: params.get('email') || '',
+          tlf: params.get('tlf') || '',
+          adresse: params.get('adresse') || '',
+          postnr: params.get('postnr') || '',
+          cvr: params.get('cvr') || '',
+          oprettet_at: now
+        })
+      });
+    }
+
+    // 2. Opdater aktivitet titel til underskrevet (brug kun eksisterende kolonner)
     if (sid) {
       await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
         method: 'PATCH',
         headers,
         body: JSON.stringify({
-          titel: 'Samtykke underskrevet digitalt',
-          underskrift: signData,
-          underskrevet_navn: navn,
-          underskrevet_at: now
-        })
-      });
-    }
-
-    // 2. Opret dokument-post med underskrift (hvis kid findes)
-    if (kid) {
-      await fetch(SB_URL + '/rest/v1/dokumenter', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          kontakt_id: kid,
-          navn: 'Samtykke - ' + (type || 'underskrift') + ' - ' + navn_kunde,
-          type: 'samtykke',
-          underskrift: signData,
-          underskrevet_navn: navn,
-          oprettet_at: now
+          titel: 'Underskrevet: ' + (type || 'Samtykke') + ' - ' + navn_kunde,
+          beskrivelse: 'Digitalt underskrevet af ' + navn + '. IP: ' + ipAdresse + '. Sted: ' + sted + '. ' + nowDK
         })
       });
     }
