@@ -369,7 +369,7 @@ async function submitSign() {
         method: 'PATCH',
         headers,
         body: JSON.stringify({
-          titel: 'Underskrevet: ' + (type || 'Samtykke') + ' - ' + navn_kunde,
+          titel: '\u2705 Samtykke underskrevet digitalt: ' + (type || 'undersoegelse'),
           beskrivelse: 'Digitalt underskrevet af ' + navn + '. IP: ' + ipAdresse + '. Sted: ' + sted + '. ' + nowDK
         })
       });
