@@ -248,7 +248,20 @@
           throw new Error('POST fejlede: ' + res.status);
         }
 
-        // Succes
+        // Send notifikationsmail via Formspree (asynkront - blokerer ikke brugeren)
+        fetch('https://formspree.io/f/mqejvrwy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            subject: '🚗 Nyt bilhus-lead: ' + navnEl.value.trim(),
+            navn: navnEl.value.trim(),
+            telefon: telefonEl.value.trim(),
+            email: emailEl.value.trim(),
+            kilde: source,
+            tidspunkt: new Date().toLocaleString('da-DK')
+          })
+        }).catch(() => {});
+
         document.getElementById('formSection').style.display = 'none';
         document.getElementById('takBox').style.display = 'block';
 
