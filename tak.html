@@ -75,5 +75,25 @@
   </div>
   <div class="footer-note">Ajour &amp; Partners ApS · CVR: 46249054 · Behandles fortroligt iht. GDPR</div>
 </div>
+<script>
+// Hent data fra sessionStorage
+const unavn = sessionStorage.getItem('underskriftNavn') || new URLSearchParams(window.location.search).get('navn') || '';
+const utype = sessionStorage.getItem('underskriftType') || 'Samtykke';
+const uvirk = sessionStorage.getItem('underskriftKundeNavn') || '';
+const udato = sessionStorage.getItem('underskriftDato') || '';
+
+if (unavn || uvirk) {
+  const box = document.createElement('div');
+  box.className = 'info-box';
+  box.style.cssText = 'background:rgba(0,0,0,0.15);border-left:3px solid rgba(255,255,255,0.4);border-radius:0 6px 6px 0;padding:13px 18px;text-align:left;font-size:9.5pt;color:rgba(255,255,255,0.85);line-height:1.85;margin-bottom:20px';
+  box.innerHTML = '<strong style="color:#fff">Registreret for:</strong><br>'
+    + (uvirk ? uvirk + '<br>' : '')
+    + (unavn ? 'Underskrevet af: ' + unavn + '<br>' : '')
+    + (udato ? 'Dato: ' + udato : '');
+  const container = document.querySelector('.container');
+  const firstInfoBox = container ? container.querySelector('.info-box') : null;
+  if (firstInfoBox) firstInfoBox.before(box);
+}
+</script>
 </body>
 </html>
