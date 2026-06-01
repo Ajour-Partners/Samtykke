@@ -71,5 +71,22 @@
   </div>
   <div class="footer-note">Ajour &amp; Partners ApS · CVR: 46249054 · Behandles fortroligt iht. GDPR</div>
 </div>
+<script>
+const unavn = sessionStorage.getItem('underskriftNavn') || new URLSearchParams(window.location.search).get('navn') || '';
+const uvirk = sessionStorage.getItem('underskriftKundeNavn') || new URLSearchParams(window.location.search).get('virksomhed') || '';
+const udato = sessionStorage.getItem('underskriftDato') || '';
+
+if (unavn || uvirk) {
+  const box = document.createElement('div');
+  box.className = 'info-box';
+  box.innerHTML = '<strong>Registreret for:</strong><br>'
+    + (uvirk ? uvirk + '<br>' : '')
+    + (unavn ? 'Underskrevet af: ' + unavn + '<br>' : '')
+    + (udato ? 'Dato: ' + udato : '');
+  const container = document.querySelector('.container');
+  const firstBox = container ? container.querySelector('.info-box') : null;
+  if (firstBox) firstBox.before(box);
+}
+</script>
 </body>
 </html>
