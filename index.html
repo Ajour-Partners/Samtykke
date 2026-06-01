@@ -262,6 +262,35 @@
 </div>
 
 <script>
+// Læs URL parametre
+const _p = new URLSearchParams(window.location.search);
+const valgtType = _p.get('type') || 'undersoegelse';
+const kid       = _p.get('kid') || '';
+const sid       = _p.get('sid') || '';
+const kundeNavn = _p.get('navn') || '-';
+const email     = _p.get('email') || '';
+const adresse   = _p.get('adresse') || '';
+const postnr    = _p.get('postnr') || '';
+const cvr       = _p.get('cvr') || '';
+const TYPER_NAVNE = {
+  undersoegelse: 'Undersøgelsesfuldmagt',
+  markedsfoering: 'Markedsføringssamtykke',
+  information: 'Informationssamtykke',
+  ajour_service: 'Ajour-Service Samtykke'
+};
+const typeNavn = TYPER_NAVNE[valgtType] || 'Samtykke';
+
+// Udfyld side med kundedata
+document.addEventListener('DOMContentLoaded', () => {
+  // Sæt navn på siden
+  document.querySelectorAll('.kunde-navn').forEach(el => el.textContent = kundeNavn);
+  // Opdater meta-info hvis elementer findes
+  const metaEl = document.getElementById('metaKunde');
+  if (metaEl) metaEl.textContent = kundeNavn;
+  const emailEl = document.getElementById('metaEmail');
+  if (emailEl) emailEl.textContent = email;
+});
+
 function toggleRest() {
   const s = document.getElementById('restSections');
   const a = document.getElementById('foldArrow');
