@@ -357,7 +357,7 @@ async function submitSign() {
   // Gem i Supabase
   try {
     if (kid) {
-      await fetch(SB_URL + '/rest/v1/samtykker', {
+      const sbRes = await fetch(SB_URL + '/rest/v1/samtykker', {
         method: 'POST', headers,
         body: JSON.stringify({
           samtykkeid: sid || (kid + '-' + valgtType + '-' + Date.now()),
@@ -377,6 +377,10 @@ async function submitSign() {
           oprettet_at: now
         })
       });
+      if (!sbRes.ok) {
+        const errTxt = await sbRes.text();
+        console.error('Supabase samtykker fejl:', sbRes.status, errTxt);
+      }
     }
     // Opdater aktivitet
     if (sid) {
