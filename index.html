@@ -288,7 +288,7 @@ canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!drawing)return
 canvas.addEventListener('touchend', ()=>drawing=false);
 function clearCanvas(){ ctx.clearRect(0,0,canvas.width,canvas.height); }
 
-function submitSign() {
+async function submitSign() {
   const navn = document.getElementById('navnInput').value.trim();
   const navnError = document.getElementById('navnError');
   if (!navn) {
@@ -299,8 +299,79 @@ function submitSign() {
   }
   navnError.style.display = 'none';
   document.getElementById('navnInput').style.borderColor = 'rgba(255,255,255,0.35)';
-  // Her ville den rigtige submit-logik køre
-  alert('Underskrift sendt! Tak, ' + navn);
+
+  const signData = canvas.toDataURL('image/png');
+  const now = new Date().toISOString();
+  const nowDK = new Date().toLocaleString('da-DK', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Hent IP
+  let ipAdresse = 'Ukendt', land = '';
+  try {
+    const geoR = await fetch('https://ipapi.co/json/');
+    const geo = await geoR.json();
+    ipAdresse = geo.ip || 'Ukendt';
+    land = geo.country_name || '';
+  } catch(e) {
+    try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); ipAdresse = d.ip || 'Ukendt'; } catch(e2) {}
+  }
+  const sted = land || 'Ukendt land';
+
+  const SB_URL = 'https://lbgzmbguqpjvruohkcuz.supabase.co';
+  const SB_KEY = 'sb_publishable_lwqJV0nBDuvNFBIwjp-0nw_odmT9Ymi';
+  const headers = {
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer ' + SB_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+
+  // Gem i Supabase
+  try {
+    if (kid) {
+      await fetch(SB_URL + '/rest/v1/samtykker', {
+        method: 'POST', headers,
+        body: JSON.stringify({
+          samtykkeid: sid || (kid + '-' + valgtType + '-' + Date.now()),
+          type: valgtType,
+          kunde_id: kid,
+          kunde_navn: kundeNavn,
+          underskrift: signData,
+          dato: now,
+          ip: ipAdresse,
+          user_agent: navigator.userAgent.substring(0, 200),
+          navn: navn,
+          email: email,
+          adresse: adresse,
+          postnr: postnr,
+          cvr: cvr,
+          noter: sted,
+          oprettet_at: now
+        })
+      });
+    }
+    // Opdater aktivitet
+    if (sid) {
+      await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
+        method: 'PATCH', headers,
+        body: JSON.stringify({
+          titel: '✅ ' + (typeNavn||'Samtykke') + ' underskrevet digitalt',
+          beskrivelse: 'Underskrevet af ' + navn + ' (' + kundeNavn + '). IP: ' + ipAdresse + '. Sted: ' + sted + '. ' + nowDK
+        })
+      });
+    }
+  } catch(e) { console.warn('Supabase fejl:', e.message); }
+
+  // Gem i sessionStorage til tak-siden
+  sessionStorage.setItem('underskriftNavn', navn);
+  sessionStorage.setItem('underskriftData', signData);
+  sessionStorage.setItem('underskriftDato', nowDK);
+  sessionStorage.setItem('underskriftIP', ipAdresse);
+  sessionStorage.setItem('underskriftSted', sted);
+  sessionStorage.setItem('underskriftType', typeNavn || 'Samtykke');
+  sessionStorage.setItem('underskriftKundeNavn', kundeNavn);
+
+  // Redirect til tak-siden
+  window.location.href = 'tak.html?navn=' + encodeURIComponent(navn) + '&type=' + encodeURIComponent(valgtType) + (sid ? '&sid=' + encodeURIComponent(sid) : '');
 }
 </script>
 </body>
