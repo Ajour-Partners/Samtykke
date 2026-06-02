@@ -102,6 +102,8 @@
   .fade-in  { animation: fadeIn  .5s forwards; }
   @keyframes fadeOut { from{opacity:1} to{opacity:0} }
   @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+
+.consent { font-size: 9px; color: rgba(255,255,255,.30); text-align: left; margin-top: 12px; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -121,6 +123,7 @@
       <input type="email" id="email" placeholder="E-mail"         autocomplete="email">
     </div>
     <button class="btn" onclick="sendLead()">HØR DIN PRIS</button>
+    <p class="consent">* Ved at trykke "HØR DIN PRIS" accepterer du, at Ajour &amp; Partners ApS kontakter dig telefonisk og/eller via mail med henblik på et uforpligtende forsikringstilbud. <a href="privatlivspolitik.html" style="color:rgba(255,255,255,.55);text-decoration:underline;">Læs vores privatlivspolitik</a>.</p>
   </div>
 
   <!-- SPINNER -->
