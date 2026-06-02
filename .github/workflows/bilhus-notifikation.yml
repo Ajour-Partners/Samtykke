@@ -1,0 +1,52 @@
+name: Bilhus Lead Notifikation
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notifikation for nye bilhus-leads
+        env:
+          SB_URL: ${{ secrets.SB_URL }}
+          SB_KEY: ${{ secrets.SB_KEY }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          NOTIFY_EMAIL: kontakt@ajourogpartners.dk
+        run: |
+          python3 << 'PYEOF'
+          import json, os, urllib.request, urllib.parse
+          sb_url = os.environ['SB_URL']
+          sb_key = os.environ['SB_KEY']
+          ms_client_id = os.environ['MS_CLIENT_ID']
+          ms_tenant_id = os.environ['MS_TENANT_ID']
+          ms_client_secret = os.environ['MS_CLIENT_SECRET']
+          notify_email = os.environ['NOTIFY_EMAIL']
+          req = urllib.request.Request(sb_url + '/rest/v1/kontakter?select=id,fornavn,mobil,telefon,email,noter&oprettet_af=eq.bilhus-qr&notificeret=eq.false', headers={'apikey': sb_key, 'Authorization': 'Bearer ' + sb_key})
+          leads = json.loads(urllib.request.urlopen(req).read().decode())
+          print(f'Leads: {len(leads)}')
+          if not leads:
+            exit(0)
+          token_data = urllib.parse.urlencode({'grant_type': 'client_credentials', 'client_id': ms_client_id, 'client_secret': ms_client_secret, 'scope': 'https://graph.microsoft.com/.default'}).encode()
+          access_token = json.loads(urllib.request.urlopen(urllib.request.Request(f'https://login.microsoftonline.com/{ms_tenant_id}/oauth2/v2.0/token', data=token_data, headers={'Content-Type': 'application/x-www-form-urlencoded'})).read().decode()).get('access_token')
+          if not access_token:
+            print('FEJL: ingen token')
+            exit(1)
+          for lead in leads:
+            navn = lead.get('fornavn','Ukendt')
+            tlf = lead.get('mobil') or lead.get('telefon','')
+            email_addr = lead.get('email','')
+            noter = lead.get('noter','')
+            lead_id = lead.get('id')
+            html = '<div style="font-family:Arial"><h2 style="color:#002D4B">Nyt bilhus-lead</h2><p><b>Navn:</b> ' + navn + '</p><p><b>Tlf:</b> ' + tlf + '</p><p><b>Email:</b> ' + email_addr + '</p><p><b>Kilde:</b> ' + noter + '</p></div>'
+            try:
+              urllib.request.urlopen(urllib.request.Request('https://graph.microsoft.com/v1.0/users/' + notify_email + '/sendMail', data=json.dumps({'message': {'subject': 'Nyt bilhus-lead: ' + navn, 'body': {'contentType': 'HTML', 'content': html}, 'toRecipients': [{'emailAddress': {'address': notify_email}}]}, 'saveToSentItems': 'false'}).encode(), headers={'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}))
+              urllib.request.urlopen(urllib.request.Request(sb_url + '/rest/v1/kontakter?id=eq.' + lead_id, data=json.dumps({'notificeret': True}).encode(), headers={'apikey': sb_key, 'Authorization': 'Bearer ' + sb_key, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'}, method='PATCH'))
+              print(f'OK: {navn}')
+            except Exception as e:
+              print(f'FEJL: {e}')
+          PYEOF
