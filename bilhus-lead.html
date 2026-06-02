@@ -132,7 +132,7 @@
     document.getElementById('formSection').classList.add('fade-out');
     setTimeout(()=>{document.getElementById('formSection').style.display='none';document.getElementById('spinnerSection').style.display='flex';},400);
     try{await fetch(SB_URL+'/rest/v1/kontakter',{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({fornavn:navn,mobil,email,lead_status:'ny',noter:'Kilde: '+source,oprettet_af:'bilhus-qr'})});}catch(e){console.warn(e);}
-    try{await fetch('https://formspree.io/f/mqejvrwy',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({navn,mobil,email,kilde:source})});}catch(e){console.warn(e);}
+    // Formspree fjernet - notifikation sendes via Supabase trigger (GDPR-compliant)
     setTimeout(()=>{document.getElementById('spinnerSection').style.display='none';document.getElementById('takNavn').textContent=navn.split(' ')[0];document.getElementById('takSection').style.display='block';},1000);
   }
   document.addEventListener('keydown',e=>{if(e.key==='Enter')sendLead();});
