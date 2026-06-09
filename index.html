@@ -361,7 +361,7 @@ async function submitSign() {
     'apikey': SB_KEY,
     'Authorization': 'Bearer ' + SB_KEY,
     'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
+    'Prefer': 'return=representation,resolution=merge-duplicates'
   };
 
   // Gem i Supabase
@@ -370,7 +370,7 @@ async function submitSign() {
       const sbRes = await fetch(SB_URL + '/rest/v1/samtykker', {
         method: 'POST', headers,
         body: JSON.stringify({
-          samtykkeid: sid || (kid + '-' + valgtType + '-' + Date.now()),
+          samtykkeid: (kid + '-' + valgtType + '-' + (sid || Date.now().toString())),
           type: valgtType,
           kunde_id: kid,
           kunde_navn: kundeNavn,
