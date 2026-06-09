@@ -389,7 +389,7 @@ async function submitSign() {
     'apikey': SB_KEY,
     'Authorization': 'Bearer ' + SB_KEY,
     'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
+    'Prefer': 'return=representation,resolution=merge-duplicates'
   };
 
   try {
