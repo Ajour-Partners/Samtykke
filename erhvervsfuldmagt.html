@@ -398,6 +398,7 @@ async function submitSign() {
         method: 'POST',
         headers,
         body: JSON.stringify({
+          id: crypto.randomUUID(),
           samtykkeid: sid || (kid + '-erh-' + Date.now()),
           type: 'erhvervsfuldmagt',
           kunde_id: kid,
