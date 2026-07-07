@@ -394,7 +394,7 @@ async function submitSign() {
 
   try {
     if (kid) {
-      await fetch(SB_URL + '/rest/v1/samtykker', {
+      const sbRes = await fetch(SB_URL + '/rest/v1/samtykker', {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -417,6 +417,10 @@ async function submitSign() {
           oprettet_at: now
         })
       });
+      if (!sbRes.ok) {
+        const errTxt = await sbRes.text();
+        console.error('Supabase samtykker fejl:', sbRes.status, errTxt);
+      }
     }
     if (sid) {
       await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
