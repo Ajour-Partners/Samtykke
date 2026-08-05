@@ -230,7 +230,7 @@
         <div class="sign-sub">Undertegnede bekræfter at have læst og accepteret ovenstående.</div>
         <div class="sign-info">
           <b>Navn:</b> <span class="kunde-navn">Peter Test</span><br>
-          <b>Dato:</b> 26. maj 2026 kl. 10.08
+          <b>Dato:</b> <span id="metaDato"></span>
         </div>
         <canvas id="signCanvas" width="840" height="220"></canvas>
 
@@ -301,6 +301,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (emailEl) emailEl.textContent = email;
   const adresseEl = document.getElementById('metaAdresse');
   if (adresseEl) adresseEl.textContent = (adresse || '') + (postnr ? ', ' + postnr : '');
+  const datoEl = document.getElementById('metaDato');
+  if (datoEl) {
+    const dNu = new Date();
+    const datoTekst = dNu.toLocaleDateString('da-DK', {day:'2-digit',month:'long',year:'numeric'});
+    const tidTekst = dNu.toLocaleTimeString('da-DK', {hour:'2-digit',minute:'2-digit'});
+    datoEl.textContent = datoTekst + ' kl. ' + tidTekst;
+  }
 });
 
 function toggleRest() {
