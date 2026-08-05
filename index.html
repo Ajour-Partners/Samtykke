@@ -186,7 +186,7 @@
     <div class="meta-bar">
       <b>Kunde:</b> <span class="kunde-navn">Peter Test</span> &nbsp;·&nbsp;
       <b>Email:</b> <span id="metaEmail"></span> &nbsp;·&nbsp;
-      <b>Adresse:</b> vibemosen 61, 2670 Greve
+      <b>Adresse:</b> <span id="metaAdresse"></span>
     </div>
     <div class="card-body">
 
@@ -299,6 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (metaEl) metaEl.textContent = kundeNavn;
   const emailEl = document.getElementById('metaEmail');
   if (emailEl) emailEl.textContent = email;
+  const adresseEl = document.getElementById('metaAdresse');
+  if (adresseEl) adresseEl.textContent = (adresse || '') + (postnr ? ', ' + postnr : '');
 });
 
 function toggleRest() {
