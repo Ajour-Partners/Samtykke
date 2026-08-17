@@ -282,6 +282,7 @@ const email     = _p.get('email') || '';
 const adresse   = _p.get('adresse') || '';
 const postnr    = _p.get('postnr') || '';
 const cvr       = _p.get('cvr') || '';
+const afsender  = _p.get('afsender') || '';
 const TYPER_NAVNE = {
   undersoegelse: 'Undersøgelsesfuldmagt',
   markedsfoering: 'Markedsføringssamtykke',
@@ -412,6 +413,17 @@ async function submitSign() {
       });
     }
   } catch(e) { console.warn('Supabase fejl:', e.message); }
+
+  // Notificer afsenderen (JB, Majid, Hadi m.fl.) om at kunden nu har underskrevet
+  if (afsender) {
+    try {
+      await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ afsender_email: afsender, type: valgtType, navn, kunde_navn: kundeNavn, cvr })
+      });
+    } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
+  }
 
   // Gem i sessionStorage til tak-siden
   sessionStorage.setItem('underskriftNavn', navn);
