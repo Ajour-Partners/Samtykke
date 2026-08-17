@@ -306,6 +306,7 @@ const selskab = params.get('selskab') || '-';
 const datoGodkendt = params.get('dato') || '-';
 const sid = params.get('sid') || '';
 const kid = params.get('kid') || '';
+const afsender = params.get('afsender') || '';
 
 // Udfyld alle felter
 document.getElementById('metaVirksomhed').textContent = virksomhed;
@@ -434,6 +435,17 @@ async function submitSign() {
     }
   } catch(e) {
     console.warn('Supabase fejl:', e.message);
+  }
+
+  // Notificer afsenderen (JB, Majid, Hadi m.fl.) om at kunden nu har underskrevet
+  if (afsender) {
+    try {
+      await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ afsender_email: afsender, type: 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr })
+      });
+    } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
   }
 
   sessionStorage.setItem('underskriftNavn', navn);
