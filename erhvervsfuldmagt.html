@@ -82,8 +82,39 @@
   .fold-btn:hover { background: rgba(255,255,255,0.15); }
   .fold-arrow { margin-left: auto; transition: transform .25s; }
   .fold-arrow.open { transform: rotate(180deg); }
-  .rest-sections { display: block; }
+  .rest-sections { display: none; }
   .rest-sections.open { display: block; }
+  .fold-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 6px;
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 9pt;
+    color: rgba(255,255,255,0.9);
+    width: 100%;
+    text-align: left;
+    margin: 14px 0;
+    transition: background .2s;
+  }
+  .fold-toggle-btn:hover { background: rgba(255,255,255,0.15); }
+  .fold-arrow { margin-left: auto; transition: transform .25s; }
+  .fold-arrow.open { transform: rotate(180deg); }
+  .bilag1-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+  .bilag1-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 9pt; }
+  .bilag1-row:last-child { border-bottom: none; }
+  .bilag1-lbl { color: rgba(255,255,255,0.65); }
+  .bilag1-val { color: #fff; font-weight: 600; text-align: right; }
+  .section-divider { border-top: 2px solid rgba(255,255,255,0.25); margin: 22px 0 16px; padding-top: 4px; font-weight: 700; color: #a8d4f0; font-size: 10.5pt; }
 
   .section {
     border-top: 1px solid rgba(255,255,255,0.12);
@@ -207,7 +238,7 @@
 </head>
 <body>
 <div class="container">
-  <div class="heading">Erhvervsfuldmagt – Opsigelse og etablering af erhvervsforsikring · Ajour &amp; Partners ApS</div>
+  <div class="heading">Opsigelse af nuværende forsikringer &amp; Aftale om Ajour-Service · Ajour &amp; Partners ApS</div>
 
   <div class="card">
     <div class="meta-bar">
@@ -237,8 +268,11 @@
         </div>
       </div>
 
-      <!-- Vis øvrige betingelser -->
-
+      <!-- Fold/unfold knap -->
+      <button type="button" class="fold-toggle-btn" onclick="toggleRest()">
+        <span id="foldLabel">📋 Vis fuld fuldmagtstekst og betingelser (punkt 1–3 samt §1–§16)</span>
+        <span class="fold-arrow" id="foldArrow">▼</span>
+      </button>
 
       <div class="rest-sections" id="restSections">
         <div class="section">
@@ -259,12 +293,58 @@
             Denne fuldmagt træder i kraft ved underskrift og tilbagekaldes automatisk, når opsigelsen af de gamle policer og etableringen af de nye dækninger er endeligt gennemført.
           </div>
         </div>
+
+        <div class="section-divider">GENERELLE FORRETNINGSBETINGELSER OG SERVICEAFTALE — Ajour-Service (gældende for erhvervskunder)</div>
+
+        <div class="section"><div class="section-title">§ 1. Status og samarbejdets omfang</div><div class="section-text">Ajour &amp; Partners ApS er registreret som forsikringsformidler/forsikringsagentur hos Finanstilsynet med FT-nr. 48218. Ajour &amp; Partners repræsenterer udvalgte forsikringsselskaber, og rådgivningen tager udgangspunkt i disse selskabers produktporteføljer.<br><br>Nærværende betingelser omfatter Ajour &amp; Partners' særskilte behovsafdækning, rådgivning, implementering og løbende overvågning af kundens forsikringsprogram, herunder det årlige Ajour-tjek.<br><br>Aftalen udgør en selvstændig B2B-kontrakt, der er juridisk og økonomisk adskilt fra kundens forsikringspolicer, policernes løbetid og eventuel provision fra forsikringsselskaberne.</div></div>
+
+        <div class="section"><div class="section-title">§ 2. Gennemsigtighed i aflønning</div><div class="section-text">For at sikre gennemsigtighed er Ajour &amp; Partners' aflønningsstruktur todelt:<br>1. Provision: For selve formidlingen og administrationen af policerne kan Ajour &amp; Partners modtage provision fra forsikringsselskaberne. Provisionen er som udgangspunkt indregnet i forsikringspræmien.<br>2. Servicehonorar: For den særskilte behovsafdækning, risikoovervågning, administration og det årlige Ajour-tjek betaler kunden et samlet fast servicehonorar. Honoraret aftales individuelt og fremgår af Bilag 1.<br><br>Kunden modtager forud for aftalens indgåelse oplysninger om Ajour &amp; Partners' rolle, aflønning og relevante samarbejdspartnere i det omfang dette følger af gældende regler for forsikringsformidling.</div></div>
+
+        <div class="section"><div class="section-title">§ 3. Ydelsernes omfang og afgrænsning</div><div class="section-text">Det aftalte servicehonorar dækker Ajour &amp; Partners' løbende administration, behovsafdækning, rådgivning og det årlige Ajour-tjek, medmindre andet udtrykkeligt fremgår af Bilag 1.<br><br>Ajour &amp; Partners' forpligtelse vedrørende det årlige Ajour-tjek anses for opfyldt, når kunden har modtaget en skriftlig invitation til gennemgang, et udkast til gennemgang eller anden relevant skriftlig henvendelse om gennemgangen. Hvis kunden undlader at reagere, udsætter eller fravælger gennemgangen, giver dette ikke kunden ret til forholdsmæssigt afslag i servicehonoraret.<br><br>Følgende ydelser er ikke omfattet af aftalen med Ajour &amp; Partners, medmindre andet aftales skriftligt: Skadesbehandling (anmeldelse, dialog med selskabet, dokumentation, forhandling om dækning/erstatning, opfølgning), driftstabssager, totalskader, deltagelse i syn og skøn, juridiske tvister, klagesager, tilkald af eksterne risikoteknikere.<br><br>Sådanne opgaver og eventuelle omkostninger hertil håndteres direkte mellem kunden, forsikringsselskabet og eventuelle eksterne specialister, herunder advokater, bygherrerådgivere, valuarer eller risikoteknikere.</div></div>
+
+        <div class="section"><div class="section-title">§ 4. Tilpasning, regulering og moms</div><div class="section-text">Honoraret behandles momsmæssigt efter de til enhver tid gældende regler. Hvis Ajour &amp; Partners efter lovgivning eller myndighedspraksis er forpligtet til at opkræve moms af hele eller dele af honoraret, tillægges moms efter gældende sats. For at sikre, at rådgivningen matcher kundens aktuelle behov, kan det årlige servicehonorar reguleres i takt med virksomhedens faktiske udvikling og ændrede risikoeksponering.<br><br>Ydelser, der efter gældende regler ikke er momsfritaget som forsikringsformidling, faktureres med moms efter gældende sats.<br><br>Ved udvidelse af virksomhedens risici, herunder tilkøb af aktiver, flere biler, flere lokationer, flere medarbejdere eller væsentligt ændret aktivitet, kan servicehonoraret opjusteres forholdsmæssigt. Kunden orienteres herom i forbindelse med det årlige Ajour-tjek eller særskilt skriftligt.<br><br>Hvis virksomhedens forsikringsbehov og reelle risikoeksponering reduceres væsentligt og dokumenterbart, kan servicehonoraret nedjusteres forholdsmæssigt i forbindelse med den fælles gennemgang ved det årlige Ajour-tjek. En nedjustering forudsætter en reel reduktion i virksomhedens aktiver og risici og kan ikke alene begrundes med overdragelse af policer til tredjepart, jf. § 6.<br><br>Indeksering: Servicehonoraret reguleres hvert år pr. 1. januar i henhold til udviklingen i Danmarks Statistiks Nettoprisindeks.</div></div>
+
+        <div class="section"><div class="section-title">§ 5. Særligt ved fremadrettet ikrafttrædelse</div><div class="section-text">Hvis administrationen og forsikringsløsningerne først overgår til Ajour &amp; Partners på en fremtidig dato, kan en del af servicehonoraret faktureres straks ved aftalens indgåelse som analyse- og etableringshonorar, jf. Bilag 1. Denne delbetaling udgør betaling for allerede udført eller igangsat rådgivningsarbejde, herunder risikoanalyse, behovsafdækning, tilbudsarbejde, forhandling, fastlæggelse af fremtidige vilkår og etableringsforberedelse.<br><br>Kunden kvitterer ved underskrift på Bilag 1 for, at det indledende arbejde er leveret eller igangsat i overensstemmelse med aftalen, og at honoraret er aftalt som betaling for denne del af samarbejdet.<br><br>Analyse- og etableringshonoraret refunderes ikke, når det aftalte analyse- og etableringsarbejde er udført eller igangsat, selv om det efterfølgende viser sig, at der ikke kan opnås den ønskede forsikringsdækning hos de samarbejdende forsikringsselskaber.</div></div>
+
+        <div class="section"><div class="section-title">§ 6. Samarbejdsperiode og uafhængighed</div><div class="section-text">Aftalen indgås for en indledende uopsigelig periode, som fastsættes konkret i Bilag 1 under hensyn til opgavens omfang, etableringsarbejde og kundens forsikringsprogram.<br><br>Uopsigelighedsperioden bør som udgangspunkt ikke overstige 12 måneder, medmindre der foreligger særlige forhold, f.eks. større etableringsarbejde, komplekst forsikringsprogram eller særskilt aftalt projektforløb. En længere periode bør fremgå tydeligt af Bilag 1.<br><br>Da aftalen og servicehonoraret dækker forarbejde, analyse, etablering, administration og det årlige Ajour-tjek, fastholdes aftalen og honoraret i den indledende uopsigelighedsperiode, medmindre andet følger af aftalen eller ufravigelig lovgivning.<br><br>Hvis kunden i uopsigelighedsperioden opsiger policerne, lader en tredjepart overtage administrationen af policerne, eller hvis policerne omlægges til nettopræmier, accepterer Ajour &amp; Partners, at eventuel provision fra forsikringsselskaberne kan bortfalde. Dette fritager dog ikke kunden for betaling af det aftalte servicehonorar i den resterende del af uopsigelighedsperioden, ligesom Ajour &amp; Partners fortsat vil stille det aftalte Ajour-tjek til rådighed i perioden.</div></div>
+
+        <div class="section"><div class="section-title">§ 7. Fakturering og betalingsbetingelser</div><div class="section-text">Servicehonoraret faktureres forud i henhold til den frekvens, der er aftalt i Bilag 1. Betalingsbetingelserne er 8 dage netto fra fakturadato, medmindre andet fremgår af Bilag 1.<br><br>Kunden kan ikke foretage modregning i servicehonoraret, medmindre modkravet er skriftligt anerkendt af Ajour &amp; Partners eller endeligt fastslået ved dom eller bindende afgørelse.<br><br>Ved forsinket betaling kan Ajour &amp; Partners fremsende rykker og beregne morarenter efter rentelovens regler samt rykkergebyrer efter gældende regler.<br><br>Udebliver betaling fortsat efter påkrav, anses dette som væsentlig misligholdelse. Ajour &amp; Partners kan i så fald ophæve aftalen.<br><br>Ved ophævelse som følge af kundens væsentlige misligholdelse forfalder et beløb svarende til 35% af det resterende servicehonorar i en eventuel uopsigelighedsperiode som en på forhånd aftalt og rimelig kompensation for Ajour &amp; Partners' tab, herunder mistet indtjening, administration og reserveret kapacitet. Ajour &amp; Partners kan kræve højere erstatning, hvis et større tab dokumenteres.</div></div>
+
+        <div class="section"><div class="section-title">§ 8. Kundens ansvar og dækningstidspunkt</div><div class="section-text">Præcis rådgivning kræver fyldestgørende og korrekte oplysninger. Kunden er ansvarlig for at afgive sandfærdige og fyldestgørende oplysninger om alle relevante risikoforhold, løbende meddele væsentlige ændringer og kontrollere modtagne policer, tilbud, dækningsoversigter og bekræftelser.<br><br>Kunden bærer som virksomhed selv det endelige ansvar for at fastsætte korrekte forsikringssummer og sikre, at relevante oplysninger om virksomheden, aktiver, drift, medarbejdere og risici er opdaterede.<br><br>Ajour &amp; Partners kan ikke holdes ansvarlig for dækningsafslag, underforsikring, overforsikring eller mangelfuld rådgivning, hvis dette skyldes urigtige, mangelfulde, forældede eller tilbageholdte oplysninger fra kunden eller kundens rådgivere.<br><br>Ajour &amp; Partners påtager sig intet ansvar for rigtigheden af data, vurderinger eller beregninger udarbejdet af kunden selv eller kundens eksterne rådgivere, herunder revisorer, valuarer, bygningssagkyndige eller tekniske rådgivere.<br><br>Hvis kunden gør sig skyldig i svig, bevidst tilbageholdelse af afgørende risikoinformationer eller anden grov misligholdelse, er Ajour &amp; Partners berettiget til at ophæve samarbejdet med øjeblikkelig virkning.<br><br>Dækningstidspunkt: Ajour &amp; Partners påtager sig intet dækningsansvar, og ingen risiko anses for dækket, før kunden har modtaget skriftlig bekræftelse i form af udstedt police, bindende dækningsbekræftelse eller anden skriftlig accept fra forsikringsselskabet.</div></div>
+
+        <div class="section"><div class="section-title">§ 9. Ansvarsbegrænsning, ansvarsforsikring og garanti</div><div class="section-text">Ajour &amp; Partners opretholder i overensstemmelse med lov om forsikringsformidling gyldig professionel ansvarsforsikring og eventuel garantiordning med summer, der til enhver tid opfylder de gældende lovfastsatte minimumskrav for forsikringsformidlere.<br><br>Ajour &amp; Partners er ansvarlig efter dansk rets almindelige regler, dog med de begrænsninger, der følger af denne aftale i det omfang begrænsningerne er gyldige efter gældende ret.<br><br>Ajour &amp; Partners påtager sig intet ansvar for forsikringsselskabernes sagsbehandling, konkrete afgørelser, præmiefastsættelse, dækningstilsagn, skadebehandling, solvens eller økonomiske forhold.<br><br>Ajour &amp; Partners hæfter ikke for indirekte tab, driftstab, dagbøder, avancetab, tabt arbejdsfortjeneste eller øvrige økonomiske følgetab, medmindre andet følger af ufravigelig lovgivning.<br><br>Ajour &amp; Partners' samlede erstatningsansvar er maksimeret til den til enhver tid gældende dækningssum på Ajour &amp; Partners' professionelle ansvarsforsikring, medmindre andet følger af ufravigelig lovgivning.</div></div>
+
+        <div class="section"><div class="section-title">§ 10. Force majeure</div><div class="section-text">Ajour &amp; Partners er ikke ansvarlig for forsinkelser eller manglende opfyldelse af aftalen, hvis dette skyldes forhold uden for Ajour &amp; Partners' rimelige kontrol, herunder krig, terror, pandemier, strejker, lockout, myndighedsindgreb, naturkatastrofer, brand, omfattende IT-nedbrud, cyberangreb eller systemnedbrud hos væsentlige IT- eller dataleverandører.<br><br>Force majeure fritager kun for ansvar i det omfang og i den periode, hvor opfyldelse er forhindret eller væsentligt vanskeliggjort.</div></div>
+
+        <div class="section"><div class="section-title">§ 11. Gensidig tavshedspligt, fortrolighed og GDPR</div><div class="section-text">Parterne skal behandle alle ikke-offentlige oplysninger, som modtages som led i samarbejdet, fortroligt. Dette gælder bl.a. forretningshemmeligheder, risikoanalyser, forsikringsprogrammer, tilbud, præmier, kundedata, tekniske oplysninger, økonomiske oplysninger og øvrigt materiale udarbejdet eller modtaget som led i samarbejdet.<br><br>Ajour &amp; Partners behandler personoplysninger i overensstemmelse med gældende databeskyttelsesregler. Ajour &amp; Partners er som udgangspunkt selvstændig dataansvarlig for behandling af personoplysninger, der sker som led i forsikringsformidling, rådgivning, tilbudsindhentning, administration og opfyldelse af aftalen.<br><br>Hvis parterne i konkrete tilfælde vurderer, at Ajour &amp; Partners behandler personoplysninger som databehandler på vegne af kunden, indgår parterne særskilt databehandleraftale.<br><br>Kunden må ikke udlevere, kopiere eller gøre risikoanalyser, koncepter, tilbud eller andet materiale udarbejdet af Ajour &amp; Partners tilgængeligt for tredjemand, herunder andre forsikringsformidlere eller mæglere, uden Ajour &amp; Partners' forudgående skriftlige samtykke.<br><br>Kunden må dog dele materialet med egne professionelle rådgivere, revisor, advokat, bank, bestyrelse, ejerkreds og koncernforbundne selskaber, forudsat at modtagerne pålægges tilsvarende fortrolighed og materialet alene anvendes til kundens interne eller rådgivningsmæssige formål.<br><br>Der henvises til Ajour &amp; Partners' til enhver tid gældende privatlivspolitik på www.ajourogpartners.dk.</div></div>
+
+        <div class="section"><div class="section-title">§ 12. Elektronisk kommunikation og referencebrug</div><div class="section-text">Parterne accepterer, at kommunikation vedrørende samarbejdet, herunder fremsendelse af betingelser, varslinger, fakturaer, påkrav og opsigelser, kan ske via e-mail til de kontaktoplysninger, der er oplyst i Bilag 1 eller senere meddelt skriftligt.<br><br>Kunden er ansvarlig for at holde Ajour &amp; Partners orienteret om ændringer i kontaktoplysninger.<br><br>Ajour &amp; Partners må kun anvende kundens navn og logo som reference i markedsføring efter kundens forudgående skriftlige samtykke.</div></div>
+
+        <div class="section"><div class="section-title">§ 13. Hvidvask, KYC og dokumentation</div><div class="section-text">I det omfang Ajour &amp; Partners er underlagt hvidvaskregler, KYC-krav eller andre lovpligtige dokumentationskrav, skal kunden udlevere nødvendig legitimation, ejeroplysninger, tegningsregler, selskabsdokumentation og øvrige relevante oplysninger.<br><br>Manglende eller forsinket udlevering af nødvendig dokumentation kan medføre, at rådgivning, tilbudsindhentning eller etablering af forsikringsløsninger midlertidigt suspenderes.</div></div>
+
+        <div class="section"><div class="section-title">§ 14. Opsigelse og forlængelse</div><div class="section-text">Efter udløbet af den indledende uopsigelighedsperiode overgår aftalen automatisk til en løbende aftale.<br><br>Herefter kan aftalen opsiges af begge parter med et varsel på løbende måned + 30 dage, medmindre andet er aftalt i Bilag 1. Ved rettidig opsigelse efter uopsigelighedsperioden refunderes eventuelt forudbetalt servicehonorar forholdsmæssigt for den periode, der ligger efter opsigelsesvarslets udløb.<br><br>Ved opsigelse fortsætter kundens forsikringer som udgangspunkt direkte hos de relevante forsikringsselskaber, medmindre kunden aftaler andet med forsikringsselskabet eller en ny formidler. Ajour &amp; Partners' rådgivnings- og serviceforpligtelser ophører fra det tidspunkt, hvor aftalen ophører.</div></div>
+
+        <div class="section"><div class="section-title">§ 15. Overdragelse, fuldstændig aftale og ugyldighed</div><div class="section-text">Overdragelse: Ajour &amp; Partners kan helt eller delvist overdrage sine rettigheder og forpligtelser efter aftalen til et andet selskab, f.eks. i forbindelse med fusion, virksomhedssalg eller omstrukturering, forudsat at dette ikke væsentligt forringer kundens vilkår.<br><br>Ved vurderingen af, om en overdragelse væsentligt forringer kundens vilkår, lægges der blandt andet vægt på, om overdragelsen medfører en væsentlig prisstigning eller en væsentlig ændring af aftalens vilkår til skade for kunden.<br><br>Fuldstændig aftale: Aftalen, herunder Bilag 1 og disse generelle forretningsbetingelser, udgør det fulde aftalegrundlag mellem parterne og erstatter alle tidligere mundtlige eller skriftlige aftaler om samme forhold.<br><br>Ugyldighed: Hvis en eller flere bestemmelser i aftalen måtte blive kendt ugyldige eller uden virkning, påvirker dette ikke gyldigheden af aftalens øvrige bestemmelser. Parterne skal i så fald erstatte bestemmelsen med en gyldig bestemmelse, der så vidt muligt opfylder samme kommercielle formål.</div></div>
+
+        <div class="section"><div class="section-title">§ 16. Lovvalg og værneting</div><div class="section-text">Aftalen er underlagt dansk ret.<br><br>Enhver tvist, der udspringer af eller har forbindelse med samarbejdet, skal anlægges ved Ajour &amp; Partners' hjemting, medmindre parterne skriftligt aftaler andet.</div></div>
+      </div>
+
+      <!-- Bilag 1 - Ajour-Service oekonomi (altid synlig) -->
+      <div class="section-divider" id="bilag1Divider" style="display:none">BILAG 1 — Specifik samarbejdsaftale (Ajour-Service)</div>
+      <div class="bilag1-box" id="bilag1Box" style="display:none">
+        <div class="bilag1-row"><span class="bilag1-lbl">Samlet årligt servicehonorar</span><span class="bilag1-val" id="agHonorar">-</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Faktureringsfrekvens</span><span class="bilag1-val">Årligt forud</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig årsdag for Ajour-tjek</span><span class="bilag1-val" id="agAarsdag">-</span></div>
+        <div class="bilag1-row"><span class="bilag1-lbl">Indledende uopsigelighedsperiode</span><span class="bilag1-val" id="agUopsigelighed">-</span></div>
       </div>
 
       <!-- Underskrift -->
       <div class="sign-box">
         <div class="sign-title">✍️ Underskrift og bekræftelse</div>
-        <div class="sign-sub">Undertegnede bekræfter at have læst og accepteret ovenstående fuldmagt.</div>
+        <div class="sign-sub" id="signSub">Undertegnede bekræfter at have læst og accepteret ovenstående fuldmagt.</div>
         <div class="sign-info">
           <b>Virksomhed:</b> <span id="signVirksomhed">-</span><br>
           <b>Kontaktperson:</b> <span id="signKontakt">-</span><br>
@@ -307,6 +387,13 @@ const datoGodkendt = params.get('dato') || '-';
 const sid = params.get('sid') || '';
 const kid = params.get('kid') || '';
 const afsender = params.get('afsender') || '';
+const agHonorar = params.get('ag_honorar') || '';
+const agDel1 = params.get('ag_del1') || '';
+const agDel2 = params.get('ag_del2') || '';
+const agIkraft = params.get('ag_ikraft') || '';
+const agAarsdag = params.get('ag_aarsdag') || '';
+const agUopsigelighed = params.get('ag_uopsigelighed') || '';
+const harAjourService = !!agHonorar;
 
 // Udfyld alle felter
 document.getElementById('metaVirksomhed').textContent = virksomhed;
@@ -322,6 +409,21 @@ document.getElementById('txtDato').textContent = datoGodkendt;
 document.getElementById('signVirksomhed').textContent = virksomhed;
 document.getElementById('signKontakt').textContent = kontakt;
 document.getElementById('signDato').textContent = new Date().toLocaleString('da-DK', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+if (harAjourService) {
+  document.getElementById('bilag1Divider').style.display = 'block';
+  document.getElementById('bilag1Box').style.display = 'block';
+  document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
+  document.getElementById('agDel1').textContent = agDel1 ? Number(agDel1).toLocaleString('da-DK') + ' kr.' : '-';
+  document.getElementById('agDel2').textContent = agDel2 ? Number(agDel2).toLocaleString('da-DK') + ' kr.' : '-';
+  document.getElementById('agIkraft').textContent = agIkraft || '-';
+  document.getElementById('agAarsdag').textContent = agAarsdag || '-';
+  document.getElementById('agUopsigelighed').textContent = agUopsigelighed ? agUopsigelighed + ' måneder' : '-';
+  document.getElementById('foldLabel').textContent = '📋 Vis fuld fuldmagtstekst og betingelser (opsigelse punkt 1–3 samt Ajour-Service §1–§16)';
+  document.getElementById('signSub').textContent = 'Undertegnede bekræfter hermed samtidig både opsigelsen af nuværende forsikringer ovenfor og aftalen om Ajour-Service (Bilag 1 og generelle betingelser).';
+} else {
+  document.getElementById('foldLabel').textContent = '📋 Vis fuldmagtstekst (punkt 1–3)';
+}
 
 // Fold/unfold
 function toggleRest() {
@@ -422,6 +524,43 @@ async function submitSign() {
         const errTxt = await sbRes.text();
         console.error('Supabase samtykker fejl:', sbRes.status, errTxt);
       }
+
+      // Gemmer Ajour-Service (Ajour-Gebyr) som en SEPARAT, intern samtykke-post -
+      // deler samme underskrift/navn/ip/dato, men holdes adskilt fra opsigelsesfuldmagten,
+      // saa den aldrig kan sendes videre til forsikringsselskaber ved en fejl.
+      if (harAjourService) {
+        const agRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            id: crypto.randomUUID(),
+            samtykkeid: (sid || (kid + '-erh-' + Date.now())) + '-ag',
+            type: 'ajour_gebyr',
+            kunde_id: kid,
+            kunde_navn: virksomhed,
+            underskrift: signData,
+            dato: now,
+            ip: ipAdresse,
+            user_agent: navigator.userAgent.substring(0,200),
+            navn: navn,
+            email: email,
+            adresse: adresse + ', ' + postnrBy,
+            cvr: cvr,
+            virksomhed_navn: virksomhed,
+            oprettet_at: now,
+            ag_honorar: agHonorar || null,
+            ag_del1: agDel1 || null,
+            ag_del2: agDel2 || null,
+            ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
+            ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
+            ag_uopsigelighed: agUopsigelighed || null
+          })
+        });
+        if (!agRes.ok) {
+          const errTxt2 = await agRes.text();
+          console.error('Supabase Ajour-Service samtykke fejl:', agRes.status, errTxt2);
+        }
+      }
     }
     if (sid) {
       await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
@@ -443,7 +582,7 @@ async function submitSign() {
       await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
-        body: JSON.stringify({ afsender_email: afsender, type: 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr })
+        body: JSON.stringify({ afsender_email: afsender, type: harAjourService ? 'opsigelse_og_ajour_service' : 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr })
       });
     } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
   }
