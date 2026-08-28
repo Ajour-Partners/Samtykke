@@ -268,20 +268,21 @@
         </div>
       </div>
 
-      <!-- Fold/unfold knap -->
-      <button type="button" class="fold-toggle-btn" onclick="toggleRest()">
-        <span id="foldLabel">📋 Vis fuld fuldmagtstekst og betingelser (punkt 1–3 samt §1–§16)</span>
-        <span class="fold-arrow" id="foldArrow">▼</span>
-      </button>
-
-      <div class="rest-sections" id="restSections">
-        <div class="section">
+      <!-- ================= OPSIGELSE ================= -->
+      <div class="section-divider" style="border-top:none;margin-top:8px">📋 Opsigelse af nuværende forsikringer</div>
+<div class="section">
           <div class="section-title">1. Opsigelse af nuværende forsikringer</div>
           <div class="section-text">
             Ajour &amp; Partners ApS bemyndiges til at opsige samtlige aktive forsikringsaftaler tilknyttet ovenstående CVR-nummer (samt eventuelle relaterede policer i fuldmagtsgivers personlige navn) i selskabet: <span class="highlight" id="txtSelskab">-</span>.
           </div>
         </div>
-        <div class="section">
+        
+      <button type="button" class="fold-toggle-btn" onclick="toggleFold('opsigelseRest','opsigelseArrow','opsigelseLabel')">
+        <span id="opsigelseLabel">Vis fuld fuldmagtstekst (punkt 2-3)</span>
+        <span class="fold-arrow" id="opsigelseArrow">v</span>
+      </button>
+      <div class="rest-sections" id="opsigelseRest">
+<div class="section">
           <div class="section-title">2. Effektuering og etablering af nye forsikringer</div>
           <div class="section-text">
             Ajour &amp; Partners ApS bemyndiges til at indsende endelige forsikringsbegæringer samt effektuere tegning af de nye erhvervsforsikringer på vegne af virksomheden. Denne etablering er strengt bundet til det specifikke forsikringstilbud/mødereferat, som er godkendt af kunden via mail den: <span class="highlight" id="txtDato">-</span>.
@@ -294,7 +295,26 @@
           </div>
         </div>
 
-        <div class="section-divider">GENERELLE FORRETNINGSBETINGELSER OG SERVICEAFTALE — Ajour-Service (gældende for erhvervskunder)</div>
+        
+      </div>
+
+      <!-- ================= AJOUR-SERVICE ================= -->
+      <div id="ajourServiceSektion" style="display:none">
+        <div class="section-divider">Ajour-Service (aftale om servicehonorar)</div>
+        <div class="bilag1-box" id="bilag1Box" style="display:block">
+          <div class="bilag1-row"><span class="bilag1-lbl">Samlet årligt servicehonorar</span><span class="bilag1-val" id="agHonorar">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Faktureringsfrekvens</span><span class="bilag1-val">Årligt forud</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig årsdag for Ajour-tjek</span><span class="bilag1-val" id="agAarsdag">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl">Indledende uopsigelighedsperiode</span><span class="bilag1-val" id="agUopsigelighed">-</span></div>
+        </div>
+        <button type="button" class="fold-toggle-btn" onclick="toggleFold('ajourRest','ajourArrow','ajourLabel')">
+          <span id="ajourLabel">Vis generelle forretningsbetingelser (paragraf 1-16)</span>
+          <span class="fold-arrow" id="ajourArrow">v</span>
+        </button>
+        <div class="rest-sections" id="ajourRest">
 
         <div class="section"><div class="section-title">§ 1. Status og samarbejdets omfang</div><div class="section-text">Ajour &amp; Partners ApS er registreret som forsikringsformidler/forsikringsagentur hos Finanstilsynet med FT-nr. 48218. Ajour &amp; Partners repræsenterer udvalgte forsikringsselskaber, og rådgivningen tager udgangspunkt i disse selskabers produktporteføljer.<br><br>Nærværende betingelser omfatter Ajour &amp; Partners' særskilte behovsafdækning, rådgivning, implementering og løbende overvågning af kundens forsikringsprogram, herunder det årlige Ajour-tjek.<br><br>Aftalen udgør en selvstændig B2B-kontrakt, der er juridisk og økonomisk adskilt fra kundens forsikringspolicer, policernes løbetid og eventuel provision fra forsikringsselskaberne.</div></div>
 
@@ -327,21 +347,10 @@
         <div class="section"><div class="section-title">§ 15. Overdragelse, fuldstændig aftale og ugyldighed</div><div class="section-text">Overdragelse: Ajour &amp; Partners kan helt eller delvist overdrage sine rettigheder og forpligtelser efter aftalen til et andet selskab, f.eks. i forbindelse med fusion, virksomhedssalg eller omstrukturering, forudsat at dette ikke væsentligt forringer kundens vilkår.<br><br>Ved vurderingen af, om en overdragelse væsentligt forringer kundens vilkår, lægges der blandt andet vægt på, om overdragelsen medfører en væsentlig prisstigning eller en væsentlig ændring af aftalens vilkår til skade for kunden.<br><br>Fuldstændig aftale: Aftalen, herunder Bilag 1 og disse generelle forretningsbetingelser, udgør det fulde aftalegrundlag mellem parterne og erstatter alle tidligere mundtlige eller skriftlige aftaler om samme forhold.<br><br>Ugyldighed: Hvis en eller flere bestemmelser i aftalen måtte blive kendt ugyldige eller uden virkning, påvirker dette ikke gyldigheden af aftalens øvrige bestemmelser. Parterne skal i så fald erstatte bestemmelsen med en gyldig bestemmelse, der så vidt muligt opfylder samme kommercielle formål.</div></div>
 
         <div class="section"><div class="section-title">§ 16. Lovvalg og værneting</div><div class="section-text">Aftalen er underlagt dansk ret.<br><br>Enhver tvist, der udspringer af eller har forbindelse med samarbejdet, skal anlægges ved Ajour &amp; Partners' hjemting, medmindre parterne skriftligt aftaler andet.</div></div>
+        </div>
       </div>
 
-      <!-- Bilag 1 - Ajour-Service oekonomi (altid synlig) -->
-      <div class="section-divider" id="bilag1Divider" style="display:none">BILAG 1 — Specifik samarbejdsaftale (Ajour-Service)</div>
-      <div class="bilag1-box" id="bilag1Box" style="display:none">
-        <div class="bilag1-row"><span class="bilag1-lbl">Samlet årligt servicehonorar</span><span class="bilag1-val" id="agHonorar">-</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Faktureringsfrekvens</span><span class="bilag1-val">Årligt forud</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig årsdag for Ajour-tjek</span><span class="bilag1-val" id="agAarsdag">-</span></div>
-        <div class="bilag1-row"><span class="bilag1-lbl">Indledende uopsigelighedsperiode</span><span class="bilag1-val" id="agUopsigelighed">-</span></div>
-      </div>
-
-      <!-- Underskrift -->
+       <!-- Underskrift -->
       <div class="sign-box">
         <div class="sign-title">✍️ Underskrift og bekræftelse</div>
         <div class="sign-sub" id="signSub">Undertegnede bekræfter at have læst og accepteret ovenstående fuldmagt.</div>
@@ -411,28 +420,26 @@ document.getElementById('signKontakt').textContent = kontakt;
 document.getElementById('signDato').textContent = new Date().toLocaleString('da-DK', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
 if (harAjourService) {
-  document.getElementById('bilag1Divider').style.display = 'block';
-  document.getElementById('bilag1Box').style.display = 'block';
+  document.getElementById('ajourServiceSektion').style.display = 'block';
   document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agDel1').textContent = agDel1 ? Number(agDel1).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agDel2').textContent = agDel2 ? Number(agDel2).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agIkraft').textContent = agIkraft || '-';
   document.getElementById('agAarsdag').textContent = agAarsdag || '-';
   document.getElementById('agUopsigelighed').textContent = agUopsigelighed ? agUopsigelighed + ' måneder' : '-';
-  document.getElementById('foldLabel').textContent = '📋 Vis fuld fuldmagtstekst og betingelser (opsigelse punkt 1–3 samt Ajour-Service §1–§16)';
-  document.getElementById('signSub').textContent = 'Undertegnede bekræfter hermed samtidig både opsigelsen af nuværende forsikringer ovenfor og aftalen om Ajour-Service (Bilag 1 og generelle betingelser).';
-} else {
-  document.getElementById('foldLabel').textContent = '📋 Vis fuldmagtstekst (punkt 1–3)';
+  document.getElementById('signSub').textContent = 'Undertegnede bekræfter hermed samtidig både opsigelsen af nuværende forsikringer og aftalen om Ajour-Service ovenfor.';
 }
 
-// Fold/unfold
-function toggleRest() {
-  const s = document.getElementById('restSections');
-  const a = document.getElementById('foldArrow');
-  const l = document.getElementById('foldLabel');
-  s.classList.toggle('open');
+// Fold/unfold - generisk funktion til begge selvstændige afsnit
+const foldGrundtekster = {};
+function toggleFold(sectionId, arrowId, labelId) {
+  const s = document.getElementById(sectionId);
+  const a = document.getElementById(arrowId);
+  const l = document.getElementById(labelId);
+  if (!(labelId in foldGrundtekster)) foldGrundtekster[labelId] = l.textContent;
+  const visesNu = s.classList.toggle('open');
   a.classList.toggle('open');
-  l.textContent = s.classList.contains('open') ? '📋 Skjul fuldmagtstekst' : '📋 Vis fuldmagtstekst (punkt 1–3)';
+  l.textContent = visesNu ? 'Skjul' : foldGrundtekster[labelId];
 }
 
 // Canvas
