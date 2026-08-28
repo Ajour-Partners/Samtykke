@@ -542,7 +542,7 @@ async function submitSign() {
           body: JSON.stringify({
             id: crypto.randomUUID(),
             samtykkeid: (sid || (kid + '-erh-' + Date.now())) + '-ag',
-            type: 'ajour_service',
+            type: 'ajour_gebyr',
             kunde_id: kid,
             kunde_navn: virksomhed,
             underskrift: signData,
