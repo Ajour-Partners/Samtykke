@@ -396,6 +396,7 @@ const datoGodkendt = params.get('dato') || '-';
 const sid = params.get('sid') || '';
 const kid = params.get('kid') || '';
 const afsender = params.get('afsender') || '';
+const agGennemgaaetDato = params.get('ag_gennemgaaet_dato') || '';
 const agHonorar = params.get('ag_honorar') || '';
 const agDel1 = params.get('ag_del1') || '';
 const agDel2 = params.get('ag_del2') || '';
@@ -560,12 +561,41 @@ async function submitSign() {
             ag_del2: agDel2 || null,
             ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
             ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
-            ag_uopsigelighed: agUopsigelighed || null
+            ag_uopsigelighed: agUopsigelighed || null,
+            raadgiver_godkendt_at: agGennemgaaetDato || null,
+            raadgiver_godkendt_af: afsender || null
           })
         });
         if (!agRes.ok) {
           const errTxt2 = await agRes.text();
           console.error('Supabase Ajour-Service samtykke fejl:', agRes.status, errTxt2);
+        } else {
+          // Send den endelige kvittering til kunden AUTOMATISK, uden at raadgiveren skal goere noget
+          try {
+            const erhData = {
+              kunde_navn: virksomhed, virksomhed_navn: virksomhed, navn, email,
+              adresse: adresse + ', ' + postnrBy, cvr, selskab, dato_godkendt: datoGodkendt,
+              dato: now, ip: ipAdresse, underskrift: signData
+            };
+            const agData = {
+              kunde_navn: virksomhed, virksomhed_navn: virksomhed, navn, email,
+              adresse: adresse + ', ' + postnrBy, cvr,
+              dato: now, ip: ipAdresse, underskrift: signData,
+              ag_honorar: agHonorar || null, ag_del1: agDel1 || null, ag_del2: agDel2 || null,
+              ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
+              ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
+              ag_uopsigelighed: agUopsigelighed || null,
+              raadgiver_godkendt_at: agGennemgaaetDato || now,
+              raadgiver_godkendt_af: afsender || ''
+            };
+            await fetch(SB_URL + '/functions/v1/send-ajour-kvittering', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+              body: JSON.stringify({ erhverv: erhData, ajourGebyr: agData })
+            });
+          } catch (eKvittering) {
+            console.warn('Automatisk kvittering fejlede (paavirker ikke selve underskriften):', eKvittering.message);
+          }
         }
       }
     }
