@@ -589,7 +589,7 @@ async function submitSign() {
       await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
-        body: JSON.stringify({ afsender_email: afsender, type: harAjourService ? 'opsigelse_og_ajour_service' : 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr })
+        body: JSON.stringify({ afsender_email: afsender, type: harAjourService ? 'opsigelse_og_ajour_service' : 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr, virksomhed_id: kid })
       });
     } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
   }
