@@ -264,7 +264,8 @@
           <b style="color:#fff">Virksomhed:</b> <span id="txtVirksomhed">-</span><br>
           <b style="color:#fff">CVR-nr.:</b> <span id="txtCvr">-</span><br>
           <b style="color:#fff">Adresse:</b> <span id="txtAdresse">-</span><br>
-          <b style="color:#fff">Kontaktperson:</b> <span id="txtKontakt">-</span>
+          <b style="color:#fff">Kontaktperson:</b> <span id="txtKontakt">-</span><br>
+          <span id="ekstraSelskaberWrap" style="display:none"><b style="color:#fff">Denne fuldmagt dækker desuden:</b> <span id="txtEkstraSelskaber">-</span></span>
         </div>
       </div>
 
@@ -395,6 +396,9 @@ const selskab = params.get('selskab') || '-';
 const datoGodkendt = params.get('dato') || '-';
 const sid = params.get('sid') || '';
 const kid = params.get('kid') || '';
+const ekstraKidListe = (params.get('ekstra_kid') || '').split(',').filter(Boolean);
+const ekstraNavneListe = (params.get('ekstra_navne') || '').split('|').filter(Boolean);
+const ekstraCvrListe = (params.get('ekstra_cvr') || '').split('|');
 const afsender = params.get('afsender') || '';
 const agGennemgaaetDato = params.get('ag_gennemgaaet_dato') || '';
 const agHonorar = params.get('ag_honorar') || '';
@@ -412,6 +416,11 @@ document.getElementById('metaKontakt').textContent = kontakt;
 document.getElementById('metaEmail').textContent = email;
 document.getElementById('txtVirksomhed').textContent = virksomhed;
 document.getElementById('txtCvr').textContent = cvr;
+if (ekstraKidListe.length > 0) {
+  const ekstraTekst = ekstraKidListe.map((id, i) => (ekstraNavneListe[i] || '') + ' (CVR ' + (ekstraCvrListe[i] || '-') + ')').join(', ');
+  document.getElementById('txtEkstraSelskaber').textContent = ekstraTekst;
+  document.getElementById('ekstraSelskaberWrap').style.display = 'inline';
+}
 document.getElementById('txtAdresse').textContent = adresse + ', ' + postnrBy;
 document.getElementById('txtKontakt').textContent = kontakt;
 document.getElementById('txtSelskab').textContent = selskab;
@@ -531,6 +540,41 @@ async function submitSign() {
       if (!sbRes.ok) {
         const errTxt = await sbRes.text();
         console.error('Supabase samtykker fejl:', sbRes.status, errTxt);
+      }
+
+      // Samme underskrift daekker ogsaa evt. tilknyttede selskaber, raadgiveren har valgt at inkludere -
+      // opretter en tilsvarende erhvervsfuldmagt-samtykke-post PR. ekstra CVR, med samme underskrift/ip/dato.
+      for (let i = 0; i < ekstraKidListe.length; i++) {
+        try {
+          const ekstraRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              id: crypto.randomUUID(),
+              samtykkeid: (sid || (kid + '-erh-' + Date.now())) + '-ekstra-' + i,
+              type: 'erhvervsfuldmagt',
+              kunde_id: ekstraKidListe[i],
+              kunde_navn: ekstraNavneListe[i] || '',
+              underskrift: signData,
+              dato: now,
+              ip: ipAdresse,
+              user_agent: navigator.userAgent.substring(0,200),
+              navn: navn,
+              email: email,
+              adresse: adresse + ', ' + postnrBy,
+              cvr: ekstraCvrListe[i] || '',
+              selskab: selskab,
+              dato_godkendt: datoGodkendt,
+              virksomhed_navn: ekstraNavneListe[i] || '',
+              oprettet_at: now
+            })
+          });
+          if (!ekstraRes.ok) {
+            console.error('Supabase samtykker fejl (ekstra selskab ' + (ekstraNavneListe[i] || '') + '):', ekstraRes.status, await ekstraRes.text());
+          }
+        } catch (eEkstra) {
+          console.warn('Kunne ikke gemme samtykke for ekstra selskab:', eEkstra.message);
+        }
       }
 
       // Gemmer Ajour-Service (Ajour-Gebyr) som en SEPARAT, intern samtykke-post -
