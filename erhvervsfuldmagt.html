@@ -269,6 +269,11 @@
         </div>
       </div>
 
+      <div id="opsummeringWrap" style="display:none" class="punkt-1">
+        <div class="punkt-1-title">Kort opsummering af det aftalte på mødet</div>
+        <div class="punkt-1-text" id="txtOpsummering" style="white-space:pre-wrap"></div>
+      </div>
+
       <!-- ================= OPSIGELSE ================= -->
       <div class="section-divider" style="border-top:none;margin-top:8px">📋 Opsigelse af nuværende forsikringer</div>
 <div class="section">
@@ -420,6 +425,11 @@ if (ekstraKidListe.length > 0) {
   const ekstraTekst = ekstraKidListe.map((id, i) => (ekstraNavneListe[i] || '') + ' (CVR ' + (ekstraCvrListe[i] || '-') + ')').join(', ');
   document.getElementById('txtEkstraSelskaber').textContent = ekstraTekst;
   document.getElementById('ekstraSelskaberWrap').style.display = 'inline';
+}
+const opsummering = params.get('opsummering') || '';
+if (opsummering.trim()) {
+  document.getElementById('txtOpsummering').textContent = opsummering;
+  document.getElementById('opsummeringWrap').style.display = 'block';
 }
 document.getElementById('txtAdresse').textContent = adresse + ', ' + postnrBy;
 document.getElementById('txtKontakt').textContent = kontakt;
