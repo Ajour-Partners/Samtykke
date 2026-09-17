@@ -308,7 +308,8 @@
       <div id="ajourServiceSektion" style="display:none">
         <div class="section-divider">Ajour-Service (aftale om servicehonorar)</div>
         <div class="bilag1-box" id="bilag1Box" style="display:block">
-          <div class="bilag1-row"><span class="bilag1-lbl">Samlet årligt servicehonorar</span><span class="bilag1-val" id="agHonorar">-</span></div>
+          <div class="bilag1-row" id="agHonorarRow"><span class="bilag1-lbl">Samlet årligt servicehonorar</span><span class="bilag1-val" id="agHonorar">-</span></div>
+          <div id="gebyrSplitBox" style="display:none"></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Faktureringsfrekvens</span><span class="bilag1-val">Årligt forud</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
@@ -412,7 +413,12 @@ const agDel2 = params.get('ag_del2') || '';
 const agIkraft = params.get('ag_ikraft') || '';
 const agAarsdag = params.get('ag_aarsdag') || '';
 const agUopsigelighed = params.get('ag_uopsigelighed') || '';
-const harAjourService = !!agHonorar;
+const gebyrSplitStr = params.get('gebyr_split') || '';
+const gebyrSplitListe = gebyrSplitStr ? gebyrSplitStr.split('|').map(function(del) {
+  const dele = del.split('~');
+  return { navn: dele[0], cvr: dele[1], del1: Number(dele[2])||0, del2: Number(dele[3])||0, total: Number(dele[4])||0 };
+}) : [];
+const harAjourService = !!agHonorar || gebyrSplitListe.length > 0;
 
 // Udfyld alle felter
 document.getElementById('metaVirksomhed').textContent = virksomhed;
@@ -441,7 +447,23 @@ document.getElementById('signDato').textContent = new Date().toLocaleString('da-
 
 if (harAjourService) {
   document.getElementById('ajourServiceSektion').style.display = 'block';
-  document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
+  if (gebyrSplitListe.length > 0) {
+    document.getElementById('agHonorarRow').style.display = 'none';
+    const box = document.getElementById('gebyrSplitBox');
+    box.style.display = 'block';
+    let html = '<div class="bilag1-lbl" style="margin-bottom:4px">Ajour-Gebyret er fordelt på følgende selskaber:</div>';
+    let sumTotal = 0;
+    gebyrSplitListe.forEach(function(g) {
+      sumTotal += g.total;
+      html += '<div class="bilag1-row"><span class="bilag1-lbl">' + g.navn + ' (CVR ' + g.cvr + ')</span><span class="bilag1-val">'
+        + (g.del2 > 0 ? (g.del1.toLocaleString('da-DK') + ' kr. + ' + g.del2.toLocaleString('da-DK') + ' kr. = ') : '')
+        + g.total.toLocaleString('da-DK') + ' kr.</span></div>';
+    });
+    html += '<div class="bilag1-row" style="font-weight:700"><span class="bilag1-lbl">Samlet for alle selskaber</span><span class="bilag1-val">' + sumTotal.toLocaleString('da-DK') + ' kr.</span></div>';
+    box.innerHTML = html;
+  } else {
+    document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
+  }
   document.getElementById('agDel1').textContent = agDel1 ? Number(agDel1).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agDel2').textContent = agDel2 ? Number(agDel2).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agIkraft').textContent = agIkraft || '-';
@@ -591,6 +613,8 @@ async function submitSign() {
       // deler samme underskrift/navn/ip/dato, men holdes adskilt fra opsigelsesfuldmagten,
       // saa den aldrig kan sendes videre til forsikringsselskaber ved en fejl.
       if (harAjourService) {
+        // I split-tilstand har hovedvirksomheden sin egen andel (foerste post i gebyrSplitListe) i stedet for det samlede agHonorar/agDel1/agDel2
+        const hovedGebyr = gebyrSplitListe.length > 0 ? gebyrSplitListe[0] : null;
         const agRes = await fetch(SB_URL + '/rest/v1/samtykker', {
           method: 'POST',
           headers,
@@ -610,9 +634,9 @@ async function submitSign() {
             cvr: cvr,
             virksomhed_navn: virksomhed,
             oprettet_at: now,
-            ag_honorar: agHonorar || null,
-            ag_del1: agDel1 || null,
-            ag_del2: agDel2 || null,
+            ag_honorar: hovedGebyr ? hovedGebyr.total : (agHonorar || null),
+            ag_del1: hovedGebyr ? hovedGebyr.del1 : (agDel1 || null),
+            ag_del2: hovedGebyr ? hovedGebyr.del2 : (agDel2 || null),
             ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
             ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
             ag_uopsigelighed: agUopsigelighed || null,
@@ -620,6 +644,30 @@ async function submitSign() {
             raadgiver_godkendt_af: afsender || null
           })
         });
+        // Hvert ekstra selskab (fra indeks 1 og frem i gebyrSplitListe, matcher ekstraKidListe raekkefoelge) faar sin EGEN ajour_gebyr-samtykke-post
+        for (let gi = 1; gi < gebyrSplitListe.length; gi++) {
+          const ekGebyr = gebyrSplitListe[gi];
+          const ekKid = ekstraKidListe[gi - 1];
+          if (!ekKid) continue;
+          try {
+            await fetch(SB_URL + '/rest/v1/samtykker', {
+              method: 'POST', headers,
+              body: JSON.stringify({
+                id: crypto.randomUUID(),
+                samtykkeid: (sid || (kid + '-erh-' + Date.now())) + '-ag-ekstra-' + gi,
+                type: 'ajour_gebyr', kunde_id: ekKid, kunde_navn: ekGebyr.navn,
+                underskrift: signData, dato: now, ip: ipAdresse, user_agent: navigator.userAgent.substring(0,200),
+                navn: navn, email: email, adresse: adresse + ', ' + postnrBy, cvr: ekGebyr.cvr,
+                virksomhed_navn: ekGebyr.navn, oprettet_at: now,
+                ag_honorar: ekGebyr.total, ag_del1: ekGebyr.del1, ag_del2: ekGebyr.del2,
+                ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
+                ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
+                ag_uopsigelighed: agUopsigelighed || null,
+                raadgiver_godkendt_at: agGennemgaaetDato || null, raadgiver_godkendt_af: afsender || null
+              })
+            });
+          } catch (eEkGebyr) { console.warn('Kunne ikke gemme split-gebyr for ekstra selskab:', eEkGebyr.message); }
+        }
         if (!agRes.ok) {
           const errTxt2 = await agRes.text();
           console.error('Supabase Ajour-Service samtykke fejl:', agRes.status, errTxt2);
