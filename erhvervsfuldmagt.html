@@ -445,6 +445,11 @@ document.getElementById('signVirksomhed').textContent = virksomhed;
 document.getElementById('signKontakt').textContent = kontakt;
 document.getElementById('signDato').textContent = new Date().toLocaleString('da-DK', {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
+if (!harAjourService) {
+  // Intet Ajour-gebyr: kunden underskriver kun opsigelsesfuldmagten - overskriften maa ikke naevne Ajour-Service
+  var hdgEl = document.querySelector('.heading');
+  if (hdgEl) hdgEl.textContent = 'Opsigelse af nuværende forsikringer · Ajour & Partners ApS';
+}
 if (harAjourService) {
   document.getElementById('ajourServiceSektion').style.display = 'block';
   if (gebyrSplitListe.length > 0) {
