@@ -374,10 +374,15 @@ async function submitSign() {
     'Prefer': 'return=representation,resolution=merge-duplicates'
   };
 
+  // Samtykker og aktiviteter gemmes via serverfunktionen samtykke-gem (ingen direkte databaseskrivning fra siden)
+  const SB_FN = SB_URL + '/functions/v1/samtykke-gem';
+  const sbSamtykke = (url, opts) => fetch(SB_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ raekker: [JSON.parse(opts.body)] }) });
+  const sbAktivitet = (url, opts) => { const b = JSON.parse(opts.body); return fetch(SB_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kunde_id: kid, aktivitet: { id: sid, titel: b.titel, beskrivelse: b.beskrivelse } }) }); };
+
   // Gem i Supabase
   try {
     if (kid) {
-      const sbRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+      const sbRes = await sbSamtykke(SB_URL + '/rest/v1/samtykker', {
         method: 'POST', headers,
         body: JSON.stringify({
           id: crypto.randomUUID(),
@@ -404,7 +409,7 @@ async function submitSign() {
     }
     // Opdater aktivitet
     if (sid) {
-      await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
+      await sbAktivitet(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
         method: 'PATCH', headers,
         body: JSON.stringify({
           titel: '✅ ' + (typeNavn||'Samtykke') + ' underskrevet digitalt',

@@ -549,9 +549,14 @@ async function submitSign() {
     'Prefer': 'return=representation,resolution=merge-duplicates'
   };
 
+  // Samtykker og aktiviteter gemmes via serverfunktionen samtykke-gem (ingen direkte databaseskrivning fra siden)
+  const SB_FN = SB_URL + '/functions/v1/samtykke-gem';
+  const sbSamtykke = (url, opts) => fetch(SB_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ raekker: [JSON.parse(opts.body)] }) });
+  const sbAktivitet = (url, opts) => { const b = JSON.parse(opts.body); return fetch(SB_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kunde_id: kid, aktivitet: { id: sid, titel: b.titel, beskrivelse: b.beskrivelse } }) }); };
+
   try {
     if (kid) {
-      const sbRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+      const sbRes = await sbSamtykke(SB_URL + '/rest/v1/samtykker', {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -583,7 +588,7 @@ async function submitSign() {
       // opretter en tilsvarende erhvervsfuldmagt-samtykke-post PR. ekstra CVR, med samme underskrift/ip/dato.
       for (let i = 0; i < ekstraKidListe.length; i++) {
         try {
-          const ekstraRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+          const ekstraRes = await sbSamtykke(SB_URL + '/rest/v1/samtykker', {
             method: 'POST',
             headers,
             body: JSON.stringify({
@@ -620,7 +625,7 @@ async function submitSign() {
       if (harAjourService) {
         // I split-tilstand har hovedvirksomheden sin egen andel (foerste post i gebyrSplitListe) i stedet for det samlede agHonorar/agDel1/agDel2
         const hovedGebyr = gebyrSplitListe.length > 0 ? gebyrSplitListe[0] : null;
-        const agRes = await fetch(SB_URL + '/rest/v1/samtykker', {
+        const agRes = await sbSamtykke(SB_URL + '/rest/v1/samtykker', {
           method: 'POST',
           headers,
           body: JSON.stringify({
@@ -655,7 +660,7 @@ async function submitSign() {
           const ekKid = ekstraKidListe[gi - 1];
           if (!ekKid) continue;
           try {
-            await fetch(SB_URL + '/rest/v1/samtykker', {
+            await sbSamtykke(SB_URL + '/rest/v1/samtykker', {
               method: 'POST', headers,
               body: JSON.stringify({
                 id: crypto.randomUUID(),
@@ -707,7 +712,7 @@ async function submitSign() {
       }
     }
     if (sid) {
-      await fetch(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
+      await sbAktivitet(SB_URL + '/rest/v1/aktiviteter?id=eq.' + encodeURIComponent(sid), {
         method: 'PATCH',
         headers,
         body: JSON.stringify({
