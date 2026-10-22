@@ -541,10 +541,7 @@ async function submitSign() {
   const sted = land || 'Ukendt land';
 
   const SB_URL = 'https://vakvnghxeysipyxasuez.supabase.co';
-  const SB_KEY = 'sb_publishable_J8CLB4lFJO_pa6YjDbw7Pg_EdxPOwcG';
   const headers = {
-    'apikey': SB_KEY,
-    'Authorization': 'Bearer ' + SB_KEY,
     'Content-Type': 'application/json',
     'Prefer': 'return=representation,resolution=merge-duplicates'
   };
@@ -702,7 +699,7 @@ async function submitSign() {
             };
             await fetch(SB_URL + '/functions/v1/send-ajour-kvittering', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ erhverv: erhData, ajourGebyr: agData })
             });
           } catch (eKvittering) {
@@ -730,7 +727,7 @@ async function submitSign() {
     try {
       await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ afsender_email: afsender, type: harAjourService ? 'opsigelse_og_ajour_service' : 'erhvervsfuldmagt', navn: kontakt, virksomhed_navn: virksomhed, cvr, virksomhed_id: kid })
       });
     } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
