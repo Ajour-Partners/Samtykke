@@ -366,10 +366,7 @@ async function submitSign() {
   const sted = land || 'Ukendt land';
 
   const SB_URL = 'https://vakvnghxeysipyxasuez.supabase.co';
-  const SB_KEY = 'sb_publishable_J8CLB4lFJO_pa6YjDbw7Pg_EdxPOwcG';
   const headers = {
-    'apikey': SB_KEY,
-    'Authorization': 'Bearer ' + SB_KEY,
     'Content-Type': 'application/json',
     'Prefer': 'return=representation,resolution=merge-duplicates'
   };
@@ -424,7 +421,7 @@ async function submitSign() {
     try {
       await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ afsender_email: afsender, type: valgtType, navn, kunde_navn: kundeNavn, cvr })
       });
     } catch(eNotif) { console.warn('Notifikation fejlede (paavirker ikke selve underskriften):', eNotif.message); }
