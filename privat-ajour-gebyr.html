@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aftale om ajour-tjek – Ajour &amp; Partners ApS</title>
+<style>
+:root{--navy:#0C2A3D;--blue:#155879;--bg:#F6F8FA;--line:#E5E9EF;--txt:#172333;--mut:#667085;--ok:#1a6b3c;--err:#b42318}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+.brand{font-weight:700;color:var(--navy);font-size:15px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+h1{font-size:22px;line-height:1.25;margin:0 0 4px;color:var(--navy)}
+.sub{color:var(--mut);font-size:14px;margin:0 0 14px}
+.prisbar{display:flex;flex-wrap:wrap;gap:8px 24px;background:#EEF5F8;border-left:4px solid var(--blue);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15px}
+.kunde{display:grid;grid-template-columns:110px 1fr;gap:4px 12px;font-size:15px;margin-top:14px}
+.kunde b{color:var(--mut);font-weight:600}
+.kunde span{overflow-wrap:anywhere}
+h2{font-size:17px;margin:0 0 6px;color:var(--navy)}
+.hint{font-size:13.5px;color:var(--mut);margin:0 0 12px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;background:#fff}
+.chk.on{border-color:var(--ok);background:#F1F9F4}
+.chk.fejl{border-color:var(--err);background:#FEF3F2}
+.chk input{width:22px;height:22px;flex:0 0 22px;margin:2px 0 0;accent-color:var(--navy)}
+.chk span{font-size:15px}
+.sublbl{font-size:13px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px}
+.fold-btn{width:100%;display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:15px;font-weight:700;color:var(--navy);cursor:pointer;text-align:left}
+.fold-btn .pil{transition:transform .2s}
+.fold-btn.open .pil{transform:rotate(180deg)}
+#aftale{display:none;margin-top:12px}
+#aftale.open{display:block}
+.sec h3{font-size:15px;color:var(--blue);margin:18px 0 6px}
+.sec p{margin:0 0 8px;font-size:14.5px}
+label.l{display:block;font-size:13.5px;font-weight:700;margin:12px 0 6px}
+input.txt{width:100%;font-size:16px;padding:12px;border:1px solid #c7ced8;border-radius:8px;text-transform:uppercase}
+canvas{width:100%;height:170px;border:1px dashed #98a2b3;border-radius:8px;background:#fff;touch-action:none;display:block}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+button.sec2{background:#fff;border:1px solid #c7ced8;border-radius:8px;padding:9px 14px;font-size:14px;cursor:pointer}
+button.prim{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:15px 22px;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:16px}
+button.prim:disabled{opacity:.55;cursor:default}
+.err{color:var(--err);font-size:14px;margin-top:8px;display:none}
+.ajsign{display:grid;grid-template-columns:110px 1fr;gap:4px 12px;font-size:14.5px}
+.ajsign b{color:var(--mut);font-weight:600}
+.tak{display:none;text-align:center;padding:30px 16px}
+.tak h2{font-size:22px}
+.okmark{width:56px;height:56px;border-radius:50%;background:#E7F5EC;color:var(--ok);font-size:30px;line-height:56px;margin:0 auto 12px}
+.foot{font-size:12.5px;color:var(--mut);text-align:center;margin-top:20px}
+@media print{body{background:#fff}.noprint{display:none!important}#aftale{display:block!important}.card{border:0;padding:0}}
+@media(max-width:480px){.kunde,.ajsign{grid-template-columns:1fr}.kunde b,.ajsign b{margin-top:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Ajour &amp; Partners ApS</div>
+
+  <div id="side">
+    <div class="card">
+      <h1 id="titel"></h1>
+      <p class="sub" id="undertitel"></p>
+      <div id="introTxt" class="sec"></div>
+      <div class="prisbar"><span><b>Pris:</b> <span id="prisTxt"></span> kr. pr. husstand (årlig betaling)</span><span><b>Type:</b> Ajour-tjek</span></div>
+      <div class="kunde" id="kundeBox"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="accepth"></h2>
+      <p class="hint" id="acceptintro"></p>
+      <div id="chkListe"></div>
+      <div class="err" id="chkFejl">Du skal afkrydse alle punkter ovenfor, før du kan underskrive.</div>
+    </div>
+
+    <div class="noprint" style="margin-bottom:16px">
+      <button type="button" class="fold-btn" id="foldBtn" aria-expanded="false" aria-controls="aftale"><span id="foldLbl">Læs hele aftalen (punkt 1–14)</span><span class="pil">▾</span></button>
+      <div id="aftale" class="card sec"></div>
+    </div>
+
+    <div class="card">
+      <h2>Underskrift</h2>
+      <div class="sublbl">For Ajour &amp; Partners ApS</div>
+      <div class="ajsign" id="ajSign"></div>
+      <div class="sublbl">For kunden</div>
+      <label class="l" for="navnInput">Navn med blokbogstaver</label>
+      <input class="txt" id="navnInput" autocomplete="name" placeholder="FOR- OG EFTERNAVN">
+      <div class="err" id="navnFejl">Skriv dit fulde navn.</div>
+      <label class="l">Underskrift (tegn med finger eller mus)</label>
+      <canvas id="signCanvas" width="1000" height="340"></canvas>
+      <div class="row"><button type="button" class="sec2" id="clearBtn">Ryd underskrift</button></div>
+      <div class="err" id="signFejl">Tegn din underskrift i feltet ovenfor.</div>
+      <button type="button" class="prim" id="sendBtn">Underskriv og accepter aftalen</button>
+      <div class="err" id="sendFejl"></div>
+    </div>
+  </div>
+
+  <div id="tak" class="card tak">
+    <div class="okmark">✓</div>
+    <h2>Tak – din aftale er underskrevet</h2>
+    <p id="takTxt">Din underskrift er modtaget og gemt hos Ajour &amp; Partners ApS.</p>
+  </div>
+
+  <div class="foot">Ajour &amp; Partners ApS · CVR 46249054 · Hørskætten 6B, 2630 Taastrup · kontakt@ajourogpartners.dk</div>
+</div>
+
+<script>
+const DATA = {"version":"privat-ajour-tjek-1","titel":"AFTALE OM AJOUR-TJEK","undertitel":"Private forsikringer – serviceaftale","intro":["Denne aftale fastsætter vilkårene for Ajour & Partners' ajour-tjek af private forsikringer.","Aftalen er skrevet i et klart sprog, så du som kunde kan se, hvad servicen indeholder, hvad den koster, hvordan betalingen sker, og hvilke rettigheder du har.","Ved underskrift eller elektronisk accept accepterer du vilkårene i denne aftale."],"sektioner":[{"h":"1. LEVERANDØR – OS","p":["**Ajour & Partners ApS**","CVR-nr.: 46249054","Hørskætten 6B","2630 Taastrup","E-mail: kontakt@ajourogpartners.dk","Herefter kaldet **”Ajour & Partners”** eller **”vi/os”**."]},{"h":"2. KUNDE – DIG","p":["Navn: {{navn}}","Adresse: {{adresse}}","Postnr./by: {{postnrby}}","Telefon: {{tlf}}","E-mail: {{email}}","Herefter kaldet **”kunden”** eller **”du/dig”**."]},{"h":"3. HVAD FÅR DU? – DIN SERVICE","p":["Ajour & Partners tilbyder et ajour-tjek af dine private forsikringer.","Det betyder, at vi gennemgår dine private forsikringsforhold og vurderer, om dine forsikringer passer til din aktuelle situation og dine oplyste behov.","Gennemgangen kan blandt andet omfatte forhold som bolig, husstand, bil, indbo, værdier, kørselsbehov og andre forhold, der kan have betydning for dit forsikringsbehov.","Vi hjælper også med at forklare relevante dækninger, vilkår og eventuelle ændringsmuligheder i et klart og forståeligt sprog.","For at vi kan hjælpe dig bedst muligt og administrere relevante forhold hos forsikringsselskabet, kan det være nødvendigt, at du giver os en særskilt fuldmagt. En sådan fuldmagt gives særskilt og er ikke automatisk en del af denne aftale."]},{"h":"4. HVAD ER IKKE MED I AFTALEN?","p":["Ajour & Partners er et registreret forsikringsagentur og ikke en uvildig forsikringsmægler.","Det betyder, at vi rådgiver med udgangspunkt i de løsninger og dækninger, som vores faste samarbejdspartnere tilbyder. Vi gennemgår eller sammenligner derfor ikke hele forsikringsmarkedet.","Aftalen omfatter ikke juridisk bistand ved konkrete skadesager, klagesager, tvister med forsikringsselskaber eller vurdering af allerede anmeldte skader, medmindre dette aftales særskilt skriftligt.","Eventuelle ændringer i dine forsikringer, præmier, selvrisici, dækninger eller øvrige forsikringsvilkår aftales særskilt mellem dig og det relevante forsikringsselskab.","Denne aftale er en selvstændig serviceaftale mellem dig og Ajour & Partners. Aftalen er adskilt fra dine forsikringsaftaler og ophører derfor ikke automatisk, hvis du opsiger, ændrer eller flytter dine forsikringer til et andet forsikringsselskab."]},{"h":"5. PRIS OG BETALING","p":["Et ajour-tjek koster **{{pris}} kr. pr. husstand**. Prisen udgør den samlede pris for kunden for denne serviceydelse.","Beløbet dækker Ajour & Partners' serviceydelse og omfatter ikke selve forsikringspræmien, selvrisici, gebyrer eller andre betalinger til dit forsikringsselskab.","Betaling sker via den betalingsmetode, som du har valgt og accepteret i forbindelse med aftalens indgåelse, eller som du efterfølgende har aftalt med Ajour & Partners."]},{"h":"6. HJÆLP OS MED AT HJÆLPE DIG – OPLYSNINGSPLIGT","p":["Vi rådgiver dig ud fra de oplysninger, du giver os, samt de forsikringsoplysninger, som vi har adgang til at gennemgå.","Det er derfor vigtigt, at du giver os korrekte og fyldestgørende oplysninger.","Du skal give os besked, hvis der sker ændringer, der kan have betydning for dine forsikringsbehov. Det kan eksempelvis være flytning, ændringer i husstand, køb eller salg af bil, ændret kørselsbehov, større værdigenstande, renovering, udlejning, erhvervsmæssig brug af bolig eller andre væsentlige ændringer.","Hvis vi ikke modtager korrekte eller fyldestgørende oplysninger, kan vores vurdering være mangelfuld eller ufuldstændig. Ajour & Partners kan derfor ikke holdes ansvarlig for fejl eller mangler i vurderingen, hvis de skyldes urigtige, mangelfulde eller ufuldstændige oplysninger fra dig."]},{"h":"7. INGEN GARANTI FOR DÆKNING, PRIS ELLER SKADEUDFALD","p":["Vi gør vores bedste for at hjælpe dig med at holde dine forsikringer ajour.","Et ajour-tjek er dog ikke en garanti for, at alle tænkelige risici er dækket, at dine forsikringer er de billigste på markedet, eller at dine forsikringer er de mest omfattende på markedet.","Ajour & Partners garanterer heller ikke, at et forsikringsselskab vil acceptere en ændring, tilbyde en bestemt dækning eller dække en konkret skade.","Forsikringsdækning afhænger altid af den konkrete forsikringsaftale, forsikringsbetingelserne, dine oplysninger og forsikringsselskabets vurdering."]},{"h":"8. DIN FORTRYDELSESRET","p":["Du har som forbruger som udgangspunkt 14 dages fortrydelsesret fra den dag, vi indgår denne aftale.","Du kan gøre brug af fortrydelsesretten ved at give Ajour & Partners skriftlig besked om, at du ønsker at fortryde aftalen, inden fristen udløber.","Ajour & Partners påbegynder som udgangspunkt først dit ajour-tjek, når fortrydelsesfristen er udløbet.","Hvis du ønsker, at Ajour & Partners skal påbegynde ajour-tjekket inden fortrydelsesfristens udløb, skal du skriftligt anmode om dette.","Hvis vi på din anmodning påbegynder ydelsen inden fortrydelsesfristens udløb, og du efterfølgende gør brug af fortrydelsesretten, kan du blive opkrævet betaling for den del af ydelsen, der allerede er leveret, i det omfang dette følger af forbrugeraftaleloven.","Hvis vi på din anmodning udfører ydelsen fuldt ud inden fortrydelsesfristens udløb, og du samtidig har anerkendt, at fortrydelsesretten bortfalder, når ydelsen er fuldt udført, mister du retten til at fortryde, når ydelsen er fuldt udført.","Hvis du ønsker at gøre brug af din fortrydelsesret, skal du skrive til kontakt@ajourogpartners.dk."]},{"h":"9. MARKEDSFØRING","p":["Ved køb af et ajour-tjek gives der samtykke til, at Ajour & Partners må sende e-mail med tilbud på samme og lignende ydelser.","Det betyder, at du ved afgivelse af din e-mail samtykker til at modtage markedsføring fra Ajour & Partners om ydelsen og lignende ydelser.","Ønsker du at framelde dig markedsføring, skal du skrive til kontakt@ajourogpartners.dk."]},{"h":"10. VORES ANSVAR","p":["Ajour & Partners tager rådgivningen alvorligt og er ansvarlig efter dansk rets almindelige regler.","Ajour & Partners er dog ikke ansvarlig for fejl eller mangler, der skyldes urigtige, mangelfulde eller ufuldstændige oplysninger fra dig, eller forhold som Ajour & Partners ikke med rimelighed kunne kende til på tidspunktet for gennemgangen.","Ajour & Partners hæfter ikke for forsikringsselskabets afgørelser, præmiefastsættelse, dækningstilsagn, afslag på dækning, skadebehandling eller økonomiske forhold.","I det omfang det er tilladt efter ufravigelig lovgivning, er Ajour & Partners' samlede erstatningsansvar begrænset til **100.000 kr. pr. skadetilfælde**.","Ansvarsbegrænsningen gælder ikke ved forsæt eller grov uagtsomhed.","Ajour & Partners dækker ikke indirekte tab, driftstab, avancetab eller lignende økonomiske følgetab, medmindre andet følger af ufravigelig lovgivning."]},{"h":"11. PERSONDATA","p":["Ajour & Partners behandler dine personoplysninger for at kunne administrere aftalen, kontakte dig og levere det årlige ajour-tjek.","Vi kan i den forbindelse behandle relevante oplysninger om dine forsikringsforhold, kontaktoplysninger og øvrige oplysninger, som du giver os i forbindelse med ydelsen.","Behandlingen sker i overensstemmelse med gældende databeskyttelsesregler.","Nærmere oplysninger om, hvordan Ajour & Partners behandler personoplysninger, herunder behandlingsgrundlag, opbevaring, videregivelse og dine rettigheder, fremgår af Ajour & Partners' privatlivspolitik."]},{"h":"12. KLAGER OG KONTAKT","p":["Hvis du har spørgsmål eller er utilfreds med Ajour & Partners' service, kan du kontakte os på:","E-mail: kontakt@ajourogpartners.dk","Telefon: 72 56 12 34","Adresse: Hørskætten 6B, 2630 Taastrup","Ajour & Partners behandler klager hurtigst muligt.","Klager over selve forsikringsaftalen, forsikringsdækningen eller forsikringsselskabets afgørelser skal som udgangspunkt rettes til forsikringsselskabet og derefter eventuelt til Ankenævnet for Forsikring, hvis betingelserne for behandling i nævnet er opfyldt.","Klager over Ajour & Partners' serviceydelse eller denne aftale kan rettes til Ajour & Partners og eventuelt til relevante klageinstanser efter gældende regler."]},{"h":"13. LOVVALG","p":["Aftalen er underlagt dansk ret.","Enhver tvist, der udspringer af eller har forbindelse med samarbejdet, skal anlægges ved Ajour & Partners' hjemting, medmindre parterne skriftligt aftaler andet."]},{"h":"14. ACCEPT OG UNDERSKRIFT","p":["Ved underskrift eller elektronisk accept bekræfter du, at du har læst og accepteret disse vilkår.","Du accepterer samtidig den årlige betaling på **{{pris}} kr. pr. husstand**, og at aftalen fornyes automatisk, indtil den opsiges i overensstemmelse med disse vilkår.","Du er bekendt med, at aftalen om årligt ajour-tjek er en selvstændig serviceaftale og ikke automatisk ophører, hvis du skifter forsikringsselskab eller vælger en anden forsikringsudbyder."]}],"accepth":"15. DIGITAL ACCEPT","acceptintro":"Når aftalen indgås elektronisk, skal du aktivt acceptere nedenstående punkter. Alle punkter skal afkrydses, før du kan underskrive.","accepter":[{"id":"c1","t":"Jeg accepterer aftalevilkårene for Ajour & Partners' ajour-tjek af private forsikringer."},{"id":"c2","t":"Jeg accepterer, at prisen er {{pris}} kr. pr. husstand."},{"id":"c3","t":"Jeg accepterer, at betaling sker via den betalingsmetode, jeg har valgt og accepteret, og at Ajour & Partners eller Ajour & Partners' betalingsudbyder må opkræve {{pris}} kr."},{"id":"c4","t":"Jeg er bekendt med, at Ajour & Partners er et registreret forsikringsagentur og ikke en uvildig forsikringsmægler, og at Ajour & Partners derfor ikke gennemgår eller sammenligner hele forsikringsmarkedet."},{"id":"c5","t":"Jeg er bekendt med, at aftalen om ajour-tjek er en selvstændig serviceaftale med Ajour & Partners."}],"bortfald":{"id":"c6","h":"Fortrydelsesret","t":"Jeg anmoder udtrykkeligt om, at Ajour & Partners påbegynder mit ajour-tjek inden udløbet af min 14 dages fortrydelsesret. Jeg er indforstået med, at hvis ydelsen er fuldt udført inden fortrydelsesfristens udløb, bortfalder min fortrydelsesret, når jeg samtidig har anerkendt dette."}};
+const params = new URLSearchParams(window.location.search);
+const kid = params.get('kid') || '';
+const sid = params.get('sid') || '';
+const navnKunde = params.get('navn') || '';
+const email = params.get('email') || '';
+const tlf = params.get('tlf') || '';
+const adresse = params.get('adresse') || '';
+const postnrBy = params.get('postnr') || '';
+const afsender = params.get('afsender') || '';
+const afsNavn = params.get('afs_navn') || '';
+const sendDato = params.get('dato') || '';
+const bortfald = params.get('bortfald') === '1';
+const pris = (params.get('pris') || '399').replace(/[^0-9]/g, '') || '399';
+
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fyld(s){
+  return String(s)
+    .replace(/\{\{pris\}\}/g, pris)
+    .replace(/\{\{navn\}\}/g, navnKunde || '-')
+    .replace(/\{\{adresse\}\}/g, adresse || '-')
+    .replace(/\{\{postnrby\}\}/g, postnrBy || '-')
+    .replace(/\{\{tlf\}\}/g, tlf || '-')
+    .replace(/\{\{email\}\}/g, email || '-');
+}
+function html(s){ return esc(fyld(s)).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+
+document.getElementById('titel').textContent = DATA.titel;
+document.getElementById('undertitel').textContent = DATA.undertitel;
+document.getElementById('introTxt').innerHTML = DATA.intro.map(function(p){ return '<p>' + html(p) + '</p>'; }).join('');
+document.getElementById('prisTxt').textContent = pris;
+document.getElementById('accepth').textContent = DATA.accepth;
+document.getElementById('acceptintro').textContent = DATA.acceptintro;
+
+document.getElementById('kundeBox').innerHTML =
+  '<b>Navn</b><span>' + esc(navnKunde || '-') + '</span>' +
+  '<b>Adresse</b><span>' + esc(adresse || '-') + '</span>' +
+  '<b>Postnr./by</b><span>' + esc(postnrBy || '-') + '</span>' +
+  '<b>Telefon</b><span>' + esc(tlf || '-') + '</span>' +
+  '<b>E-mail</b><span>' + esc(email || '-') + '</span>';
+
+// Fuld aftale (fold ud)
+document.getElementById('aftale').innerHTML = DATA.sektioner.map(function(s){
+  return '<div class="sec"><h3>' + esc(s.h) + '</h3>' + s.p.map(function(p){ return '<p>' + html(p) + '</p>'; }).join('') + '</div>';
+}).join('');
+const foldBtn = document.getElementById('foldBtn');
+foldBtn.addEventListener('click', function(){
+  const open = document.getElementById('aftale').classList.toggle('open');
+  foldBtn.classList.toggle('open', open);
+  foldBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.getElementById('foldLbl').textContent = open ? 'Skjul aftalen' : 'Læs hele aftalen (punkt 1–14)';
+});
+
+// Afkrydsninger
+const liste = DATA.accepter.slice();
+const chkBox = document.getElementById('chkListe');
+function chkHtml(c){
+  return '<label class="chk" data-id="' + c.id + '"><input type="checkbox" id="' + c.id + '"><span>' + html(c.t) + '</span></label>';
+}
+let h = liste.map(chkHtml).join('');
+if (bortfald) {
+  liste.push(DATA.bortfald);
+  h += '<div class="sublbl">' + esc(DATA.bortfald.h) + '</div>' + chkHtml(DATA.bortfald);
+}
+chkBox.innerHTML = h;
+chkBox.addEventListener('change', function(e){
+  const l = e.target.closest('.chk');
+  if (l) { l.classList.toggle('on', e.target.checked); l.classList.remove('fejl'); }
+  document.getElementById('chkFejl').style.display = 'none';
+});
+
+// Ajours (forudfyldte) underskrift
+function dagDK(){
+  if (sendDato) return sendDato;
+  return new Date().toLocaleDateString('da-DK', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\./g, '-');
+}
+document.getElementById('ajSign').innerHTML =
+  '<b>Dato</b><span>' + esc(dagDK()) + '</span>' +
+  '<b>Sted</b><span>Taastrup</span>' +
+  '<b>Underskrift</b><span>Underskrevet digitalt for Ajour &amp; Partners ApS</span>' +
+  '<b>Navn</b><span>' + esc(afsNavn || 'Ajour & Partners ApS') + '</span>';
+
+// Underskriftsfelt
+const canvas = document.getElementById('signCanvas');
+const ctx = canvas.getContext('2d');
+ctx.strokeStyle = '#001e38'; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+let drawing = false, harTegnet = false;
+function pos(e){
+  const r = canvas.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return { x: (p.clientX - r.left) * canvas.width / r.width, y: (p.clientY - r.top) * canvas.height / r.height };
+}
+function start(e){ e.preventDefault(); drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+function move(e){ if (!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); harTegnet = true; document.getElementById('signFejl').style.display = 'none'; }
+function stop(){ drawing = false; }
+canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move);
+window.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop);
+canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', move, {passive:false});
+canvas.addEventListener('touchend', stop);
+document.getElementById('clearBtn').addEventListener('click', function(){ ctx.clearRect(0, 0, canvas.width, canvas.height); harTegnet = false; });
+
+const SB_URL = 'https://vakvnghxeysipyxasuez.supabase.co';
+const SB_FN = SB_URL + '/functions/v1/samtykke-gem';
+
+document.getElementById('sendBtn').addEventListener('click', async function(){
+  const btn = this;
+  const fejlEl = document.getElementById('sendFejl');
+  fejlEl.style.display = 'none';
+  // 1) alle synlige afkrydsninger skal være sat
+  let mangler = false;
+  liste.forEach(function(c){
+    const el = document.getElementById(c.id);
+    const lbl = el.closest('.chk');
+    if (!el.checked) { mangler = true; lbl.classList.add('fejl'); }
+  });
+  document.getElementById('chkFejl').style.display = mangler ? 'block' : 'none';
+  // 2) navn
+  const navn = document.getElementById('navnInput').value.trim();
+  const navnOk = navn.length >= 3 && navn.indexOf(' ') > 0;
+  document.getElementById('navnFejl').style.display = navnOk ? 'none' : 'block';
+  // 3) underskrift
+  document.getElementById('signFejl').style.display = harTegnet ? 'none' : 'block';
+  if (mangler || !navnOk || !harTegnet) {
+    const foerste = mangler ? document.getElementById('chkListe') : (!navnOk ? document.getElementById('navnInput') : canvas);
+    foerste.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  if (!kid) { fejlEl.textContent = 'Linket er ikke gyldigt. Kontakt Ajour & Partners på kontakt@ajourogpartners.dk.'; fejlEl.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Gemmer …';
+
+  const signData = canvas.toDataURL('image/png');
+  const nu = new Date().toISOString();
+  const nuDK = new Date().toLocaleString('da-DK', {day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  let ip = '', land = '';
+  try { const r = await fetch('https://ipapi.co/json/'); const g = await r.json(); ip = g.ip || ''; land = g.country_name || ''; }
+  catch (e) { try { const r2 = await fetch('https://api.ipify.org?format=json'); const g2 = await r2.json(); ip = g2.ip || ''; } catch (e2) {} }
+
+  const noter = JSON.stringify({
+    version: DATA.version,
+    pris: Number(pris),
+    bortfald: bortfald,
+    afkrydset: liste.map(function(c){ return { id: c.id, tekst: fyld(c.t) }; }),
+    ajour: { dato: dagDK(), sted: 'Taastrup', navn: afsNavn || 'Ajour & Partners ApS', afsender: afsender },
+    sted: land
+  });
+  const raekke = {
+    samtykkeid: (sid || (kid + '-pag-' + Date.now())),
+    type: 'privat_ajour_gebyr',
+    kunde_id: kid,
+    kunde_navn: navnKunde,
+    underskrift: signData,
+    dato: nu,
+    ip: ip,
+    user_agent: navigator.userAgent.substring(0, 200),
+    navn: navn,
+    email: email,
+    tlf: tlf,
+    adresse: adresse,
+    postnr: postnrBy,
+    ag_honorar: pris,
+    raadgiver_godkendt_af: afsender,
+    noter: noter,
+    oprettet_at: nu
+  };
+  try {
+    const body = { raekker: [raekke] };
+    if (sid) body.aktivitet = { id: sid, titel: '✅ Ajour-tjek (privat) underskrevet digitalt', beskrivelse: 'Underskrevet af ' + navn + (bortfald ? ' (med bortfald af fortrydelsesret)' : ' (uden bortfald af fortrydelsesret)') + '. IP: ' + (ip || 'ukendt') + '. ' + (land ? 'Sted: ' + land + '. ' : '') + nuDK };
+    body.kunde_id = kid;
+    const res = await fetch(SB_FN, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error('Serverfejl ' + res.status);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Underskriv og accepter aftalen';
+    fejlEl.textContent = 'Din underskrift kunne ikke gemmes. Prøv igen om lidt, eller kontakt os på kontakt@ajourogpartners.dk.';
+    fejlEl.style.display = 'block';
+    return;
+  }
+  // Notificér rådgiveren (påvirker ikke selve underskriften hvis den fejler)
+  if (afsender) {
+    try {
+      await fetch(SB_URL + '/functions/v1/send-underskrift-notifikation', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ afsender_email: afsender, type: 'privat_ajour_gebyr', navn: navn, virksomhed_navn: navnKunde, cvr: '', virksomhed_id: kid })
+      });
+    } catch (e) {}
+  }
+  document.getElementById('takTxt').innerHTML = 'Tak, ' + esc(navn) + '. Din underskrift er modtaget og gemt hos Ajour &amp; Partners ApS den ' + esc(nuDK) + '.';
+  document.getElementById('side').style.display = 'none';
+  document.getElementById('tak').style.display = 'block';
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
