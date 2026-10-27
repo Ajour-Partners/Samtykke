@@ -249,6 +249,7 @@ document.getElementById('sendBtn').addEventListener('click', async function(){
     ajour: { dato: dagDK(), sted: 'Taastrup', navn: afsNavn || 'Ajour & Partners ApS', afsender: afsender },
     sted: land
   });
+  const aftaleTekst = [DATA.titel, DATA.undertitel].concat(DATA.intro || []).concat(DATA.sektioner.map(function(s){ return s.h + '\n' + s.p.join('\n'); })).join('\n\n').replace(/<[^>]+>/g, '');
   const raekke = {
     samtykkeid: (sid || (kid + '-pag-' + Date.now())),
     type: 'privat_ajour_gebyr',
@@ -266,6 +267,8 @@ document.getElementById('sendBtn').addEventListener('click', async function(){
     ag_honorar: pris,
     raadgiver_godkendt_af: afsender,
     noter: noter,
+    aftale_version: Number((String(DATA.version).match(/(\d+)$/) || [])[1]) || null,
+    aftale_tekst: aftaleTekst,
     oprettet_at: nu
   };
   try {
