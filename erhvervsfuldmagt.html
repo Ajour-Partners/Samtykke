@@ -527,13 +527,13 @@ async function submitSign() {
   // Hent IP og geo
   let ipAdresse = 'Ukendt', land = '';
   try {
-    const geoR = await fetch('https://ipapi.co/json/');
+    const geoR = await Promise.reject(new Error('IP aflaeses paa serveren'));
     const geo = await geoR.json();
     ipAdresse = geo.ip || 'Ukendt';
     land = geo.country_name || '';
   } catch(e) {
     try {
-      const ipR = await fetch('https://api.ipify.org?format=json');
+      const ipR = await Promise.reject(new Error('IP aflaeses paa serveren'));
       const ipD = await ipR.json();
       ipAdresse = ipD.ip || 'Ukendt';
     } catch(e2) {}
