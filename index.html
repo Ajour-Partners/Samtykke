@@ -356,12 +356,12 @@ async function submitSign() {
   // Hent IP
   let ipAdresse = 'Ukendt', land = '';
   try {
-    const geoR = await fetch('https://ipapi.co/json/');
+    const geoR = await Promise.reject(new Error('IP aflaeses paa serveren'));
     const geo = await geoR.json();
     ipAdresse = geo.ip || 'Ukendt';
     land = geo.country_name || '';
   } catch(e) {
-    try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); ipAdresse = d.ip || 'Ukendt'; } catch(e2) {}
+    try { const r = await Promise.reject(new Error('IP aflaeses paa serveren')); const d = await r.json(); ipAdresse = d.ip || 'Ukendt'; } catch(e2) {}
   }
   const sted = land || 'Ukendt land';
 
