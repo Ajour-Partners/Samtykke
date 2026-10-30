@@ -314,7 +314,7 @@
           <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
           <div class="bilag1-row" id="agDel1DatoRow" style="display:none"><span class="bilag1-lbl">Betalingsdato (del 1)</span><span class="bilag1-val" id="agDel1Dato">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
-          <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
+          <div class="bilag1-row"><span class="bilag1-lbl" id="agIkraftLbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig årsdag for Ajour-tjek</span><span class="bilag1-val" id="agAarsdag">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Indledende uopsigelighedsperiode</span><span class="bilag1-val" id="agUopsigelighed">-</span></div>
         </div>
@@ -472,6 +472,7 @@ if (harAjourService) {
     document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
   }
   document.getElementById('agDel1').textContent = agDel1 ? Number(agDel1).toLocaleString('da-DK') + ' kr.' : '-';
+  if (agDel1 && agDel2) { document.getElementById('agIkraftLbl').textContent = 'Betalingsdato (del 2) – ikrafttrædelse'; }
   if (agDel1Dato) { document.getElementById('agDel1DatoRow').style.display = ''; document.getElementById('agDel1Dato').textContent = agDel1Dato; }
   document.getElementById('agDel2').textContent = agDel2 ? Number(agDel2).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agIkraft').textContent = agIkraft || '-';
