@@ -312,6 +312,7 @@
           <div id="gebyrSplitBox" style="display:none"></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Faktureringsfrekvens</span><span class="bilag1-val">Årligt forud</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Analyse- og etableringshonorar (del 1)</span><span class="bilag1-val" id="agDel1">-</span></div>
+          <div class="bilag1-row" id="agDel1DatoRow" style="display:none"><span class="bilag1-lbl">Betalingsdato (del 1)</span><span class="bilag1-val" id="agDel1Dato">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Restbeløb ved ikrafttrædelse (del 2)</span><span class="bilag1-val" id="agDel2">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig ikrafttrædelsesdato</span><span class="bilag1-val" id="agIkraft">-</span></div>
           <div class="bilag1-row"><span class="bilag1-lbl">Fremtidig årsdag for Ajour-tjek</span><span class="bilag1-val" id="agAarsdag">-</span></div>
@@ -414,6 +415,7 @@ const agIkraft = params.get('ag_ikraft') || '';
 const agAarsdag = params.get('ag_aarsdag') || '';
 const agUopsigelighed = params.get('ag_uopsigelighed') || '';
 const gebyrSplitStr = params.get('gebyr_split') || '';
+const agDel1Dato = params.get('ag_del1_dato') || '';
 const gebyrSplitListe = gebyrSplitStr ? gebyrSplitStr.split('|').map(function(del) {
   const dele = del.split('~');
   return { navn: dele[0], cvr: dele[1], del1: Number(dele[2])||0, del2: Number(dele[3])||0, total: Number(dele[4])||0 };
@@ -470,6 +472,7 @@ if (harAjourService) {
     document.getElementById('agHonorar').textContent = agHonorar ? Number(agHonorar).toLocaleString('da-DK') + ' kr.' : '-';
   }
   document.getElementById('agDel1').textContent = agDel1 ? Number(agDel1).toLocaleString('da-DK') + ' kr.' : '-';
+  if (agDel1Dato) { document.getElementById('agDel1DatoRow').style.display = ''; document.getElementById('agDel1Dato').textContent = agDel1Dato; }
   document.getElementById('agDel2').textContent = agDel2 ? Number(agDel2).toLocaleString('da-DK') + ' kr.' : '-';
   document.getElementById('agIkraft').textContent = agIkraft || '-';
   document.getElementById('agAarsdag').textContent = agAarsdag || '-';
@@ -644,7 +647,8 @@ async function submitSign() {
             ag_honorar: hovedGebyr ? hovedGebyr.total : (agHonorar || null),
             ag_del1: hovedGebyr ? hovedGebyr.del1 : (agDel1 || null),
             ag_del2: hovedGebyr ? hovedGebyr.del2 : (agDel2 || null),
-            ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
+            ag_del1_dato: agDel1Dato ? agDel1Dato.split('.').reverse().join('-') : null,
+              ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
             ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
             ag_uopsigelighed: agUopsigelighed || null,
             raadgiver_godkendt_at: agGennemgaaetDato || null,
@@ -691,6 +695,7 @@ async function submitSign() {
               adresse: adresse + ', ' + postnrBy, cvr,
               dato: now, ip: ipAdresse, underskrift: signData,
               ag_honorar: agHonorar || null, ag_del1: agDel1 || null, ag_del2: agDel2 || null,
+              ag_del1_dato: agDel1Dato ? agDel1Dato.split('.').reverse().join('-') : null,
               ag_ikraft: agIkraft ? agIkraft.split('.').reverse().join('-') : null,
               ag_aarsdag: agAarsdag ? agAarsdag.split('.').reverse().join('-') : null,
               ag_uopsigelighed: agUopsigelighed || null,
