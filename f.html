@@ -71,7 +71,7 @@
 
   function vis(d) {
     var k = d.kontrakt;
-    var h = '<div class="meta-bar"><b>Til:</b> ' + esc(d.navn) + ' &nbsp;·&nbsp; <b>Samtykke til:</b> Forsia Forsikring A/S</div>';
+    var h = '<div class="meta-bar"><b>Til:</b> ' + esc(d.navn) + '</div>';
     h += '<div class="intro">' + esc(k.intro) + '</div>';
     k.samtykker.forEach(function (s, i) {
       h += '<div class="punkt"><div class="punkt-titel">' + esc(s.nr + '. ' + s.titel) + '</div><div class="punkt-tekst">' + esc(s.tekst) + '</div>' +
