@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Få dit tilbud på bilforsikring — Ajour &amp; Partners</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --navy:#0B2A3F; --teal:#1E7F94; --light:#EDF4F6; }
+  body { min-height: 100vh; background: var(--navy); font-family: 'Segoe UI', Arial, sans-serif; color: #fff; display: flex; justify-content: center; padding: 28px 22px 48px; }
+  .wrap { width: 100%; max-width: 420px; }
+  .brand { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #8FD0DF; font-weight: 700; margin-bottom: 26px; }
+  .eyebrow { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #8FD0DF; font-weight: 700; margin-bottom: 10px; }
+  h1 { font-size: clamp(28px, 8vw, 38px); line-height: 1.05; font-weight: 800; margin-bottom: 12px; }
+  .sub { font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.8); margin-bottom: 26px; }
+  .field { margin-bottom: 15px; }
+  .field label { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 5px; font-weight: 600; }
+  .field input { width: 100%; background: #fff; color: #0B2A3F; border: 2px solid transparent; border-radius: 6px; font-size: 17px; padding: 12px; outline: none; -webkit-appearance: none; }
+  .field input:focus { border-color: #00b4d8; }
+  .field input.err { border-color: #ff8a8a; }
+  .hint { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 4px; }
+  .btn { width: 100%; padding: 15px; background: #00b4d8; color: #fff; font-size: 14px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border: 0; border-radius: 6px; cursor: pointer; margin-top: 8px; }
+  .btn:hover { background: #0096b4; }
+  .btn:disabled { opacity: .6; cursor: not-allowed; }
+  .error { display: none; background: rgba(255,138,138,.15); border: 1px solid #ff8a8a; color: #ffd0d0; border-radius: 6px; padding: 10px 12px; font-size: 14px; line-height: 1.5; margin-top: 12px; }
+  .consent { font-size: 11.5px; color: rgba(255,255,255,.6); margin-top: 18px; line-height: 1.6; }
+  .consent a { color: rgba(255,255,255,.9); text-decoration: underline; }
+  .tak { display: none; padding-top: 10px; }
+  .tak h2 { font-size: 28px; font-weight: 800; margin-bottom: 14px; }
+  .tak p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.85); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Ajour &amp; Partners</div>
+
+  <div id="formSection">
+    <div class="eyebrow" id="eyebrow">Bilforsikring</div>
+    <h1>Ny bil.<br>Trygt videre.</h1>
+    <p class="sub">Skriv dit navn og telefonnummer, så ringer vi dig op og giver dig et uforpligtende tilbud på bilforsikring.</p>
+
+    <div class="field"><label for="navn">Dit navn</label><input type="text" id="navn" autocomplete="name" placeholder="Fornavn og efternavn"></div>
+    <div class="field"><label for="mobil">Dit telefonnummer</label><input type="tel" id="mobil" autocomplete="tel" inputmode="tel" placeholder="XX XX XX XX"></div>
+    <div class="field" id="saelgerField" style="display:none"><label for="saelger">Sælgers navn</label><input type="text" id="saelger" autocomplete="off" placeholder="Hvem hos forhandleren har du talt med?"><div class="hint">Skal udfyldes</div></div>
+
+    <button class="btn" id="sendBtn" type="button">Send og ring mig op</button>
+    <div class="error" id="errBox"></div>
+
+    <p class="consent" id="consent">* Dit samtykke er frivilligt og kan til enhver tid tilbagekaldes ved at skrive til <a href="mailto:kontakt@ajourogpartners.dk">kontakt@ajourogpartners.dk</a>. Dine oplysninger (<span id="cData">navn og telefonnummer</span>) behandles udelukkende af Ajour &amp; Partners ApS med henblik på at give dig et uforpligtende forsikringstilbud. Vi kontakter dig telefonisk. Vi noterer, hvilken forhandler du kommer fra<span id="cSaelger"></span>, så vi kan se, hvor henvendelsen stammer fra. Oplysningerne slettes automatisk efter 12 måneder. Ajour &amp; Partners ApS, Hørskætten 6B, 2630 Taastrup, CVR: 46249054. <a href="privatlivspolitik.html" target="_blank" rel="noopener">Læs vores privatlivspolitik</a>.</p>
+  </div>
+
+  <div class="tak" id="takSection">
+    <h2>Tak!</h2>
+    <p>Tak, <strong id="takNavn"></strong>. Vi har modtaget dine oplysninger og ringer dig op hurtigst muligt.<br><br>Du kan trygt lukke siden nu.</p>
+  </div>
+</div>
+
+<script>
+  // Forhandlere: slug (?f=) -> visningsnavn, oprettet_af (tilladt af Supabase-policy), sælger-felt påkrævet?
+  const PARTNERE = {
+    'au2vest':   { navn: 'Au2vest',             oprettet_af: 'au2vest-qr',          saelger: true  },
+    'ejby':      { navn: 'Din Bilpartner Ejby', oprettet_af: 'din-bilpartner-ejby', saelger: true  },
+    'stengaard': { navn: 'Stengaard Biler',     oprettet_af: 'bilhus-qr',           saelger: true  },
+    'hvidovre':  { navn: 'Hvidovre Biler',      oprettet_af: 'hvidovre-qr',         saelger: false }
+  };
+  const SB_URL = 'https://vakvnghxeysipyxasuez.supabase.co';
+  const SB_KEY = 'sb_publishable_J8CLB4lFJO_pa6YjDbw7Pg_EdxPOwcG';
+
+  const slug = (new URLSearchParams(window.location.search).get('f') || '').toLowerCase();
+  const P = PARTNERE[slug] || null;
+  const $ = id => document.getElementById(id);
+
+  if (P) {
+    $('eyebrow').textContent = 'Til dig, der køber bil hos ' + P.navn;
+    if (P.saelger) {
+      $('saelgerField').style.display = 'block';
+      $('cData').textContent = 'navn, telefonnummer og sælgers navn';
+      $('cSaelger').textContent = ' og hvilken sælger du har talt med';
+    }
+  }
+
+  function showError(msg) { const b = $('errBox'); b.textContent = msg; b.style.display = 'block'; }
+
+  async function sendLead() {
+    $('errBox').style.display = 'none';
+    ['navn', 'mobil', 'saelger'].forEach(i => $(i).classList.remove('err'));
+    if (!P) { showError('Linket er ikke gyldigt. Ring til os på 72 56 12 34, så hjælper vi dig.'); return; }
+
+    const navn = $('navn').value.trim();
+    const mobil = $('mobil').value.trim();
+    const saelger = $('saelger').value.trim();
+    const cifre = mobil.replace(/\D/g, '');
+
+    let fejl = '';
+    if (navn.length < 2) { $('navn').classList.add('err'); fejl = 'Skriv dit navn.'; }
+    else if (cifre.length < 8) { $('mobil').classList.add('err'); fejl = 'Skriv dit telefonnummer (mindst 8 cifre).'; }
+    else if (P.saelger && saelger.length < 2) { $('saelger').classList.add('err'); fejl = 'Skriv sælgerens navn.'; }
+    if (fejl) { showError(fejl); return; }
+
+    const btn = $('sendBtn');
+    btn.disabled = true; btn.textContent = 'Sender…';
+
+    const row = {
+      fornavn: navn,
+      mobil: mobil,
+      lead_status: 'ny',
+      oprettet_af: P.oprettet_af,
+      kilde: P.navn,
+      noter: 'Kilde: ' + P.navn + ' (flyer)' + (P.saelger ? ' · Sælger: ' + saelger : '')
+    };
+    if (P.saelger) row.saelger = saelger;
+
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/kontakter', {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(row)
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+    } catch (e) {
+      console.warn(e);
+      btn.disabled = false; btn.textContent = 'Send og ring mig op';
+      showError('Noget gik galt, og vi har ikke modtaget dine oplysninger. Prøv igen, eller ring til os på 72 56 12 34.');
+      return;
+    }
+    $('formSection').style.display = 'none';
+    $('takNavn').textContent = navn.split(' ')[0];
+    $('takSection').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  $('sendBtn').addEventListener('click', sendLead);
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && $('formSection').style.display !== 'none') sendLead(); });
+</script>
+</body>
+</html>
